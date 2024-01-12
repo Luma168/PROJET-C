@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "images.c"
+#include "image.h"
+#include "effects.h"
 
 int main(){
     char* filename = NULL;
@@ -18,9 +19,29 @@ int main(){
             filename[characters_read - 1] = '\0';
         }
 
-        struct imageNB* img;
-        loadPPM(&img, filename);
-        savePPM(&img,"./images/result/aaa.ppm");
+        // Trouver l'extension du fichier
+        char* file_extension = strrchr(filename, '.');
+        if (file_extension != NULL) {
+            // Comparer l'extension pour déterminer le type d'image
+            if (strcmp(file_extension, ".pgm") == 0) {
+                struct imageNB* img;
+                loadPGM(&img, filename);
+                // translatePGM(&img, 200);
+                // negatifPGM(&img);
+                mirrorPGM(&img);
+                // savePGM(&img, "./images/result/aaa.pgm");
+            } else if (strcmp(file_extension, ".ppm") == 0) {
+                struct imageRGB* img;
+                loadPPM(&img, filename);
+                // translatePPM(&img, 200);
+                // negatifPPM(&img);
+                // savePPM(&img, "./images/result/aaa.ppm");
+            } else {
+                fprintf(stderr, "Format d'image non pris en charge.\n");
+            }
+        } else {
+            fprintf(stderr, "L'extension du fichier est introuvable.\n");
+        }
         
     } else {
         fprintf(stderr, "Erreur lors de la saisie.\n");

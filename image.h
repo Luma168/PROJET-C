@@ -2,8 +2,6 @@
 #define _IMAGE_
 #include <stdio.h>
 
-
-
 struct imageNB{
     int width;
     int height;
@@ -82,7 +80,7 @@ void savePGM(struct imageNB* img, char* nomImage)
         }
         fclose(fichier);
     }else{
-    printf("Création du fichier impossible %s \n", nomImage);
+        printf("Creation du fichier impossible %s \n", nomImage);
     }
 }
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -140,7 +138,7 @@ void savePPM(struct imageRGB* img, char* nomImage) {
 
         for (int i = 0; i < img->width; i++) {
             for (int j = 0; j < img->height; j++) {
-                unsigned char tmp[3] = {img->red[i][j], img->green[i][j], img->blue[i][j]};
+                unsigned char tmp[3] = {img->green[i][j], img->blue[i][j], img->red[i][j]};
                 fwrite(tmp, sizeof(unsigned char), 3, fichier);
             }
         }
