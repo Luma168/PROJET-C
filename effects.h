@@ -134,13 +134,47 @@ void mirrorPGM(struct imageNB* img)
         tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
     }
 
-    for (int i=0; i < tr.width; i++ ){
-        for (int j=0; j < tr.height/2; j++){
+    for (int i=0; i < tr.height; i++ ){
+        for (int j=0; j <= tr.width/2; j++){
             float tmp = img->color[i][j];
-            tr.color[i][j] = img->color[i][255-j];
-            tr.color[i][255-j] = tmp;
+            tr.color[i][j] = img->color[i][tr.width-j];
+            tr.color[i][tr.width-j] = tmp;
         }
     }
     savePGM(&tr,"./images/result/mirror.pgm");
+}
+
+void mirrorPPM(struct imageRGB* img)
+{
+    struct imageRGB tr;
+    tr.width = img->width;
+    tr.height = img->height;
+
+    tr.red = malloc(img->height * sizeof(unsigned char*));
+    tr.green = malloc(img->height * sizeof(unsigned char*));
+    tr.blue = malloc(img->height * sizeof(unsigned char*));
+
+    for (int i = 0; i < img->height; i++) {
+        tr.red[i] = malloc(img->width * sizeof(unsigned char));
+        tr.green[i] = malloc(img->width * sizeof(unsigned char));
+        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+    }
+
+    for (int i=0; i < tr.height; i++ ){
+        for (int j=0; j <= tr.width/2; j++){
+            float tmpRed = img->red[i][j];
+            float tmpGreen = img->green[i][j];
+            float tmpBlue = img->blue[i][j];
+
+            tr.red[i][j] = img->red[i][tr.width-j];
+            tr.green[i][j] = img->green[i][tr.width-j];
+            tr.blue[i][j] = img->blue[i][tr.width-j];
+
+            tr.red[i][tr.width-j] = tmpRed;
+            tr.green[i][tr.width-j] = tmpGreen;
+            tr.blue[i][tr.width-j] = tmpBlue;
+        }
+    }
+    savePPM(&tr,"./images/result/mirror.ppm");
 }
 #endif

@@ -28,13 +28,14 @@ int main(){
                 loadPGM(&img, filename);
                 // translatePGM(&img, 200);
                 // negatifPGM(&img);
-                mirrorPGM(&img);
+                // mirrorPGM(&img);
                 // savePGM(&img, "./images/result/aaa.pgm");
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, filename);
                 // translatePPM(&img, 200);
                 // negatifPPM(&img);
+                // mirrorPPM(&img);
                 // savePPM(&img, "./images/result/aaa.ppm");
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
