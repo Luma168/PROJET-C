@@ -59,7 +59,7 @@ void loadPGM(struct imageNB* img, char* nomImage)
             printf(" format inconnu\n");
         }
     }else{
-    printf("--> %s est introuvable \n", nomImage);
+        printf("--> %s est introuvable \n", nomImage);
     }
 }
 

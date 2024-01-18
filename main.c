@@ -5,38 +5,41 @@
 #include "effects.h"
 
 int main(){
-    char* filename = NULL;
+    char* start = NULL;
     size_t buffer_size = 0;
-    char* resultfilename = NULL;
 
     printf("Saisissez le chemin vers l'image: ");
     // getline pour saisir la ligne complète, y compris les espaces
-    ssize_t characters_read = getline(&filename, &buffer_size, stdin);
+    ssize_t imgPath = getline(&start, &buffer_size, stdin);
 
-    if (characters_read != -1) {
+    if (imgPath != -1) {
         // Supprimer le caractère de nouvelle ligne à la fin de la chaîne
-        if (filename[characters_read - 1] == '\n') {
-            filename[characters_read - 1] = '\0';
+        if (start[imgPath - 1] == '\n') {
+            start[imgPath - 1] = '\0';
         }
 
         // Trouver l'extension du fichier
-        char* file_extension = strrchr(filename, '.');
+        char* file_extension = strrchr(start, '.');
         if (file_extension != NULL) {
             // Comparer l'extension pour déterminer le type d'image
             if (strcmp(file_extension, ".pgm") == 0) {
                 struct imageNB* img;
-                loadPGM(&img, filename);
-                // translatePGM(&img, 200);
+                loadPGM(&img, start);
+                // horizontalTranslatePGM(&img, 200);
+                // verticalTranslatePGM(&img, 200);
                 // negatifPGM(&img);
-                // mirrorPGM(&img);
-                // savePGM(&img, "./images/result/aaa.pgm");
+                // verticalMirrorPGM(&img);
+                // horizontalMirrorPGM(&img);
+                // seuillagePGM(&img, 150);
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
-                loadPPM(&img, filename);
-                // translatePPM(&img, 200);
+                loadPPM(&img, start);
+                // horizontalTranslatePPM(&img, 200);
+                // verticalTranslatePPM(&img, 200);
                 // negatifPPM(&img);
-                // mirrorPPM(&img);
-                // savePPM(&img, "./images/result/aaa.ppm");
+                // horizontalMirrorPPM(&img);
+                // verticalMirrorPPM(&img);
+                // seuillagePPM(&img, 250);
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
             }
