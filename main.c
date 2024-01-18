@@ -31,6 +31,7 @@ int main(){
                 // verticalMirrorPGM(&img);
                 // horizontalMirrorPGM(&img);
                 // seuillagePGM(&img, 150);
+                luminosityPGM(&img, -50);
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, start);
@@ -40,6 +41,7 @@ int main(){
                 // horizontalMirrorPPM(&img);
                 // verticalMirrorPPM(&img);
                 // seuillagePPM(&img, 250);
+                // ppmToPgm(&img);
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
             }

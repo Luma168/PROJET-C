@@ -379,4 +379,119 @@ void seuillagePPM(struct imageRGB* img, int seuil)
     savePPM(&seu,"./images/result/seuillage.ppm");
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+
+void ppmToPgm(struct imageRGB* img)
+{
+    struct imageNB pgm;
+    pgm.width = img->width;
+    pgm.height = img->height;
+    pgm.vmax = 255;
+    pgm.color=malloc(pgm.height * sizeof(unsigned char*));
+    for (int ii = 0; ii < pgm.height; ii++) {
+        pgm.color[ii]= malloc(pgm.width * sizeof(unsigned char));
+    }
+
+    for(int i=0;i< img->width;i++)
+    {
+        for(int j=0;j<img->height;j++)
+        {
+            pgm.color[i][j] = 0.299*img->red[i][j] + 0.587*img->green[i][j] + 0.114*img->blue[i][j];
+        }
+
+    }
+    savePGM(&pgm,"./images/result/niveauGris.pgm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
+void luminosityPGM(struct imageNB* img, int intensite)
+{
+    struct imageNB lum;
+    lum.width = img->width;
+    lum.height = img->height;
+    lum.vmax = img->vmax;
+    lum.color=malloc(lum.height * sizeof(unsigned char*));
+    for (int ii = 0; ii < lum.height; ii++) {
+        lum.color[ii]= malloc(lum.width * sizeof(unsigned char));
+    }
+
+    for(int i=0;i< img->width;i++)
+    {
+        for(int j=0;j<img->height;j++)
+        {
+            lum.color[i][j] =img->color[i][j] + intensite;
+        }
+
+    }
+    savePGM(&lum,"./images/result/luminosity.pgm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
+// void rotation(struct imageNB *img, double angle, bool clockwise)
+// {
+//     double radians = angle * M_PI / 180.0;
+
+//     int newWidth, newHeight;
+//     if (clockwise)
+//     {
+//         newWidth = img->height;
+//         newHeight = img->width;
+//     }
+//     else
+//     {
+//         newWidth = img->width;
+//         newHeight = img->height;
+//     }
+
+//     struct imageNB rotatedImg;
+//     rotatedImg.width = newWidth;
+//     rotatedImg.height = newHeight;
+//     rotatedImg.vmax = img->vmax;
+//     rotatedImg.color = malloc(rotatedImg.height * sizeof(unsigned char *));
+
+//     for (int i = 0; i < rotatedImg.height; i++)
+//     {
+//         rotatedImg.color[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+//     }
+
+//     double centerX = img->width / 2.0;
+//     double centerY = img->height / 2.0;
+
+//     for (int i = 0; i < rotatedImg.width; i++)
+//     {
+//         for (int j = 0; j < rotatedImg.height; j++)
+//         {
+//             double x = i - centerX;
+//             double y = j - centerY;
+
+//             double newX = x * cos(radians) - y * sin(radians);
+//             double newY = x * sin(radians) + y * cos(radians);
+
+//             int originalX, originalY;
+
+//             if (clockwise)
+//             {
+//                 originalX = (int)(newX + centerY);
+//                 originalY = (int)(centerX - newY);
+//             }
+//             else
+//             {
+//                 originalX = (int)(centerX + newX);
+//                 originalY = (int)(newY + centerY);
+//             }
+
+//             if (originalX >= 0 && originalX < img->width && originalY >= 0 && originalY < img->height)
+//             {
+//                 rotatedImg.color[j][i] = img->color[originalY][originalX];
+//             }
+//             else
+//             {
+//                 rotatedImg.color[j][i] = 0; // Set to black for pixels outside the original image
+//             }
+//         }
+//     }
+// }
+
 #endif
