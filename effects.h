@@ -405,26 +405,163 @@ void ppmToPgm(struct imageRGB* img)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void luminosityPGM(struct imageNB* img, int intensite)
+void histogramme(struct imageNB* img)
 {
-    struct imageNB lum;
-    lum.width = img->width;
-    lum.height = img->height;
-    lum.vmax = img->vmax;
-    lum.color=malloc(lum.height * sizeof(unsigned char*));
-    for (int ii = 0; ii < lum.height; ii++) {
-        lum.color[ii]= malloc(lum.width * sizeof(unsigned char));
-    }
+    // Create a histogram with 256 bins (assuming 8-bit grayscale image)
+    int histogram[256] = {0};
 
-    for(int i=0;i< img->width;i++)
-    {
-        for(int j=0;j<img->height;j++)
-        {
-            lum.color[i][j] =img->color[i][j] + intensite;
+    // Calculate histogram
+    for (int i = 0; i < img->width; i++) {
+        for (int j = 0; j < img->height; j++) {
+            int intensity = img->color[j][i];
+            histogram[intensity]++;
         }
-
     }
-    savePGM(&lum,"./images/result/luminosity.pgm");
+
+    // Find the maximum histogram value to scale the histogram
+    int maxHistogramValue = 0;
+    for (int i = 0; i < 256; i++) {
+        if (histogram[i] > maxHistogramValue) {
+            maxHistogramValue = histogram[i];
+        }
+    }
+
+    // Create an image to represent the histogram
+    struct imageNB histo;
+    histo.width = 256; // 256 bins
+    histo.height = maxHistogramValue + 1; // Add 1 to include intensity 0
+    histo.vmax = 255; // Assuming 8-bit intensity values
+    histo.color = malloc(histo.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < histo.height; ii++) {
+        histo.color[ii] = malloc(histo.width * sizeof(unsigned char));
+        for (int jj = 0; jj < histo.width; jj++) {
+            histo.color[ii][jj] = 0; // Initialize to black
+        }
+    }
+
+    // Populate the histogram image
+    for (int i = 0; i < 256; i++) {
+        int normalizedValue = (histogram[i] * histo.height) / maxHistogramValue;
+
+        // Draw a vertical line in the histogram image
+        for (int j = 0; j < normalizedValue; j++) {
+            histo.color[histo.height - 1 - j][i] = 255; // Set intensity value (you may adjust this based on your requirements)
+        }
+    }
+
+    // Save histogram as PGM image
+    savePGM(&histo, "./images/result/histogramme.pgm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
+void floutagePGM(struct imageNB* img, int blurDegree)
+{
+    struct imageNB blurred;
+    blurred.width = img->width;
+    blurred.height = img->height;
+    blurred.vmax = img->vmax;
+    blurred.color = malloc(blurred.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < blurred.height; ii++) {
+        blurred.color[ii] = malloc(blurred.width * sizeof(unsigned char));
+    }
+
+    // Calculate the blur kernel size based on the blur degree
+    int kernelSize = 2 * blurDegree + 1;
+
+    // Allocate memory for the blur kernel dynamically
+    int** kernel = malloc(kernelSize * sizeof(int*));
+    for (int i = 0; i < kernelSize; i++) {
+        kernel[i] = malloc(kernelSize * sizeof(int));
+    }
+
+    // Fill the blur kernel with 1's
+    for (int i = 0; i < kernelSize; i++) {
+        for (int j = 0; j < kernelSize; j++) {
+            kernel[i][j] = 1;
+        }
+    }
+
+    // Convolution operation
+    for (int i = blurDegree; i < img->width - blurDegree; i++) {
+        for (int j = blurDegree; j < img->height - blurDegree; j++) {
+            int sum = 0;
+            for (int ki = -blurDegree; ki <= blurDegree; ki++) {
+                for (int kj = -blurDegree; kj <= blurDegree; kj++) {
+                    sum += img->color[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
+                }
+            }
+            blurred.color[j][i] = sum / (kernelSize * kernelSize); // Normalize by the sum of kernel values
+        }
+    }
+
+    // Free the dynamically allocated memory for the kernel
+    for (int i = 0; i < kernelSize; i++) {
+        free(kernel[i]);
+    }
+    free(kernel);
+
+    savePGM(&blurred, "./images/result/blurred.pgm");
+}
+
+void floutagePPM(struct imageRGB* img, int blurDegree)
+{
+    struct imageRGB blurred;
+    blurred.width = img->width;
+    blurred.height = img->height;
+
+    blurred.red = malloc(blurred.height * sizeof(unsigned char*));
+    blurred.green = malloc(blurred.height * sizeof(unsigned char*));
+    blurred.blue = malloc(blurred.height * sizeof(unsigned char*));
+
+    for (int i = 0; i < blurred.height; i++) {
+        blurred.red[i] = malloc(blurred.width * sizeof(unsigned char));
+        blurred.green[i] = malloc(blurred.width * sizeof(unsigned char));
+        blurred.blue[i] = malloc(blurred.width * sizeof(unsigned char));
+    }
+
+    // Calculate the blur kernel size based on the blur degree
+    int kernelSize = 2 * blurDegree + 1;
+
+    // Allocate memory for the blur kernel dynamically
+    int** kernel = malloc(kernelSize * sizeof(int*));
+    for (int i = 0; i < kernelSize; i++) {
+        kernel[i] = malloc(kernelSize * sizeof(int));
+    }
+
+    // Fill the blur kernel with 1's
+    for (int i = 0; i < kernelSize; i++) {
+        for (int j = 0; j < kernelSize; j++) {
+            kernel[i][j] = 1;
+        }
+    }
+
+    // Convolution operation
+    for (int i = blurDegree; i < img->width - blurDegree; i++) {
+        for (int j = blurDegree; j < img->height - blurDegree; j++) {
+            int sumRed = 0, sumGreen = 0, sumBlue = 0;
+            for (int ki = -blurDegree; ki <= blurDegree; ki++) {
+                for (int kj = -blurDegree; kj <= blurDegree; kj++) {
+                    sumRed += img->red[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
+                    sumGreen += img->green[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
+                    sumBlue += img->blue[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
+                }
+            }
+            blurred.red[j][i] = sumRed / (kernelSize * kernelSize); // Normalize by the sum of kernel values
+            blurred.green[j][i] = sumGreen / (kernelSize * kernelSize);
+            blurred.blue[j][i] = sumBlue / (kernelSize * kernelSize);
+        }
+    }
+
+    // Free the dynamically allocated memory for the kernel
+    for (int i = 0; i < kernelSize; i++) {
+        free(kernel[i]);
+    }
+    free(kernel);
+
+    savePPM(&blurred, "./images/result/blurred.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
