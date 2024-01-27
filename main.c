@@ -25,33 +25,246 @@ int main(){
             if (strcmp(file_extension, ".pgm") == 0) {
                 struct imageNB* img;
                 loadPGM(&img, start);
-                // horizontalTranslatePGM(&img, -200);
-                // verticalTranslatePGM(&img, -200);
-                // negatifPGM(&img);
-                // verticalMirrorPGM(&img);
-                // horizontalMirrorPGM(&img);
-                // seuillagePGM(&img, 150);
-                // histogramme(&img);
-                // floutagePGM(&img, 5);
-                // pixeliserPGM(&img, 5);
-                // adjustContrastPGM(&img, 2);
-                // scalePGM(&img, 0.5);
-                // luminositePGM(&img, 100);
+
+                int choice;
+                printf("Choisissez l'effet:\n");
+                printf("1. Translation horizontale\n");
+                printf("2. Translation verticale\n");
+                printf("3. Négatif\n");
+                printf("4. Miroir vertical\n");
+                printf("5. Miroir horizontal\n");
+                printf("6. Seuillage\n");
+                printf("7. Histogramme\n");
+                printf("8. Floutage\n");
+                printf("9. Pixeliser\n");
+                printf("10. Ajuster le contraste\n");
+                printf("11. Redimensionner (scale)\n");
+                printf("12. Ajuster la luminosite\n");
+
+                scanf("%d", &choice);
+
+                switch (choice) {
+                    case 1:
+                        // Translation horizontale
+                        {
+                            int decal;
+                            printf("Saisissez le decalage horizontal: ");
+                            scanf("%d", &decal);
+                            horizontalTranslatePGM(&img, decal);
+                            break;
+                        }
+                    case 2:
+                        // Translation verticale
+                        {
+                            int decalV;
+                            printf("Saisissez le decalage vertical: ");
+                            scanf("%d", &decalV);
+                            verticalTranslatePGM(&img, decalV);
+                            break;
+                        }
+                    case 3:
+                        // Négatif
+                        {
+                            negatifPGM(&img);
+                            break;
+                        }
+                    case 4:
+                        // Miroir vertical
+                        {
+                            verticalMirrorPGM(&img);
+                            break;
+                        }
+                    case 5:
+                        // Miroir horizontal
+                        {
+                            horizontalMirrorPGM(&img);
+                            break;
+                        }
+                    case 6:
+                        // Seuillage
+                        {
+                            int seuil;
+                            printf("Saisissez le seuil de seuillage: ");
+                            scanf("%d", &seuil);
+                            seuillagePGM(&img, seuil);
+                            break;
+                        }
+                    case 7:
+                        // Histogramme
+                        {
+                            histogramme(&img);
+                            break;
+                        }
+                    case 8:
+                        // Floutage
+                        {
+                            int rayon;
+                            printf("Saisissez le rayon de floutage: ");
+                            scanf("%d", &rayon);
+                            floutagePGM(&img, rayon);
+                            break;
+                        }
+                    case 9:
+                        // Pixeliser
+                        {
+                            int pixelSize;
+                            printf("Saisissez la taille des pixels: ");
+                            scanf("%d", &pixelSize);
+                            pixeliserPGM(&img, pixelSize);
+                            break;
+                        }
+                    case 10:
+                        // Ajuster le contraste
+                        {
+                            float facteurContraste;
+                            printf("Saisissez le facteur de contraste: ");
+                            scanf("%f", &facteurContraste);
+                            contrastPGM(&img, facteurContraste);
+                            break;
+                        }
+                    case 11:
+                        // Redimensionner (scale)
+                        {
+                            float facteurEchelle;
+                            printf("Saisissez le facteur d'echelle: ");
+                            scanf("%f", &facteurEchelle);
+                            scalePGM(&img, facteurEchelle);
+                            break;
+                        }
+                    case 12:
+                        // Ajuster la luminosité
+                        {
+                            int valeurLuminosite;
+                            printf("Saisissez la valeur de luminosite: ");
+                            scanf("%d", &valeurLuminosite);
+                            luminositePGM(&img, valeurLuminosite);
+                            break;
+                        }
+                    default:
+                        fprintf(stderr, "Choix non valide.\n");
+                }
+
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, start);
-                // horizontalTranslatePPM(&img, -200);
-                // verticalTranslatePPM(&img, -200);
-                // negatifPPM(&img);
-                // horizontalMirrorPPM(&img);
-                // verticalMirrorPPM(&img);
-                // seuillagePPM(&img, 250);
-                // ppmToPgm(&img);
-                // floutagePPM(&img, 5);
-                // pixeliserPPM(&img, 5);
-                // contrastPPM(&img, 3);
-                // scalePPM(&img, 0.5);
-                // luminositePPM(&img, 100);
+                
+                int choice;
+                printf("Choisissez l'effet:\n");
+                printf("1. Translation horizontale\n");
+                printf("2. Translation verticale\n");
+                printf("3. Négatif\n");
+                printf("4. Miroir vertical\n");
+                printf("5. Miroir horizontal\n");
+                printf("6. Seuillage\n");
+                printf("7. Histogramme\n");
+                printf("8. Floutage\n");
+                printf("9. Pixeliser\n");
+                printf("10. Ajuster le contraste\n");
+                printf("11. Redimensionner (scale)\n");
+                printf("12. Ajuster la luminosite\n");
+
+                scanf("%d", &choice);
+
+                switch (choice) {
+                    case 1:
+                        // Translation horizontale
+                        {
+                            int decal;
+                            printf("Saisissez le decalage horizontal: ");
+                            scanf("%d", &decal);
+                            horizontalTranslatePPM(&img, decal);
+                            break;
+                        }
+                    case 2:
+                        // Translation verticale
+                        {
+                            int decalV;
+                            printf("Saisissez le decalage vertical: ");
+                            scanf("%d", &decalV);
+                            verticalTranslatePPM(&img, decalV);
+                            break;
+                        }
+                    case 3:
+                        // Négatif
+                        {
+                            negatifPPM(&img);
+                            break;
+                        }
+                    case 4:
+                        // Miroir vertical
+                        {
+                            verticalMirrorPPM(&img);
+                            break;
+                        }
+                    case 5:
+                        // Miroir horizontal
+                        {
+                            horizontalMirrorPPM(&img);
+                            break;
+                        }
+                    case 6:
+                        // Seuillage
+                        {
+                            int seuil;
+                            printf("Saisissez le seuil de seuillage: ");
+                            scanf("%d", &seuil);
+                            seuillagePPM(&img, seuil);
+                            break;
+                        }
+                    case 7:
+                        // Histogramme
+                        {
+                            histogramme(&img);
+                            break;
+                        }
+                    case 8:
+                        // Floutage
+                        {
+                            int rayon;
+                            printf("Saisissez le rayon de floutage: ");
+                            scanf("%d", &rayon);
+                            floutagePPM(&img, rayon);
+                            break;
+                        }
+                    case 9:
+                        // Pixeliser
+                        {
+                            int pixelSize;
+                            printf("Saisissez la taille des pixels: ");
+                            scanf("%d", &pixelSize);
+                            pixeliserPPM(&img, pixelSize);
+                            break;
+                        }
+                    case 10:
+                        // Ajuster le contraste
+                        {
+                            float facteurContraste;
+                            printf("Saisissez le facteur de contraste: ");
+                            scanf("%f", &facteurContraste);
+                            contrastPPM(&img, facteurContraste);
+                            break;
+                        }
+                    case 11:
+                        // Redimensionner (scale)
+                        {
+                            float facteurEchelle;
+                            printf("Saisissez le facteur d'echelle: ");
+                            scanf("%f", &facteurEchelle);
+                            scalePPM(&img, facteurEchelle);
+                            break;
+                        }
+                    case 12:
+                        // Ajuster la luminosité
+                        {
+                            int valeurLuminosite;
+                            printf("Saisissez la valeur de luminosite: ");
+                            scanf("%d", &valeurLuminosite);
+                            luminositePPM(&img, valeurLuminosite);
+                            break;
+                        }
+                    default:
+                        fprintf(stderr, "Choix non valide.\n");
+                }
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
             }
@@ -63,23 +276,6 @@ int main(){
         fprintf(stderr, "Erreur lors de la saisie.\n");
     }
 
-    // Libérer la mémoire allouée
-    // free(filename);
 
-
-
-    // Vérifier si la lecture a réussi
-    // if (img) {
-    //     printf("Image lue avec succès!\n");
-    //     // Ajoutez le code ici pour effectuer d'autres opérations sur l'image
-    //     // ...
-
-    //     // Libérer la mémoire allouée
-    //     for (int i = 0; i < img->height; i++) {
-    //         free(img->data[i]);
-    //     }
-    //     free(img->data);
-    //     free(img);
-    // }
     return 0;
 }
