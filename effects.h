@@ -729,69 +729,83 @@ void contrastPPM(struct imageRGB* img, float factor)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-// void rotation(struct imageNB *img, double angle, bool clockwise)
-// {
-//     double radians = angle * M_PI / 180.0;
+void scalePGM(struct imageNB* img, float scale)
+{
+    // Calculer les nouvelles dimensions de l'image
+    int newWidth = (int)(img->width * scale);
+    int newHeight = (int)(img->height * scale);
 
-//     int newWidth, newHeight;
-//     if (clockwise)
-//     {
-//         newWidth = img->height;
-//         newHeight = img->width;
-//     }
-//     else
-//     {
-//         newWidth = img->width;
-//         newHeight = img->height;
-//     }
+    struct imageNB scaledImg;
+    scaledImg.width = newWidth;
+    scaledImg.height = newHeight;
+    scaledImg.vmax = img->vmax;
 
-//     struct imageNB rotatedImg;
-//     rotatedImg.width = newWidth;
-//     rotatedImg.height = newHeight;
-//     rotatedImg.vmax = img->vmax;
-//     rotatedImg.color = malloc(rotatedImg.height * sizeof(unsigned char *));
+    scaledImg.color = malloc(newHeight * sizeof(unsigned char*));
+    for (int ii = 0; ii < newHeight; ii++) {
+        scaledImg.color[ii] = malloc(newWidth * sizeof(unsigned char));
+    }
 
-//     for (int i = 0; i < rotatedImg.height; i++)
-//     {
-//         rotatedImg.color[i] = malloc(rotatedImg.width * sizeof(unsigned char));
-//     }
+    // Redimensionner l'image
+    for (int i = 0; i < newWidth; i++) {
+        for (int j = 0; j < newHeight; j++) {
+            int originalX = (int)(i / scale);
+            int originalY = (int)(j / scale);
 
-//     double centerX = img->width / 2.0;
-//     double centerY = img->height / 2.0;
+            // Assurez-vous que les indices restent dans les limites de l'image d'origine
+            originalX = (originalX < 0) ? 0 : originalX;
+            originalY = (originalY < 0) ? 0 : originalY;
+            originalX = (originalX >= img->width) ? img->width - 1 : originalX;
+            originalY = (originalY >= img->height) ? img->height - 1 : originalY;
 
-//     for (int i = 0; i < rotatedImg.width; i++)
-//     {
-//         for (int j = 0; j < rotatedImg.height; j++)
-//         {
-//             double x = i - centerX;
-//             double y = j - centerY;
+            scaledImg.color[j][i] = img->color[originalY][originalX];
+        }
+    }
 
-//             double newX = x * cos(radians) - y * sin(radians);
-//             double newY = x * sin(radians) + y * cos(radians);
+    savePGM(&scaledImg, "./images/result/scaled_image.pgm");
+}
 
-//             int originalX, originalY;
+void scalePPM(struct imageRGB* img, float scale)
+{
+    // Calculer les nouvelles dimensions de l'image
+    int newWidth = (int)(img->width * scale);
+    int newHeight = (int)(img->height * scale);
 
-//             if (clockwise)
-//             {
-//                 originalX = (int)(newX + centerY);
-//                 originalY = (int)(centerX - newY);
-//             }
-//             else
-//             {
-//                 originalX = (int)(centerX + newX);
-//                 originalY = (int)(newY + centerY);
-//             }
+    struct imageRGB scaledImg;
+    scaledImg.width = newWidth;
+    scaledImg.height = newHeight;
 
-//             if (originalX >= 0 && originalX < img->width && originalY >= 0 && originalY < img->height)
-//             {
-//                 rotatedImg.color[j][i] = img->color[originalY][originalX];
-//             }
-//             else
-//             {
-//                 rotatedImg.color[j][i] = 0; // Set to black for pixels outside the original image
-//             }
-//         }
-//     }
-// }
+    scaledImg.red = malloc(newHeight * sizeof(unsigned char*));
+    scaledImg.green = malloc(newHeight * sizeof(unsigned char*));
+    scaledImg.blue = malloc(newHeight * sizeof(unsigned char*));
+
+    for (int i = 0; i < newHeight; i++) {
+        scaledImg.red[i] = malloc(newWidth * sizeof(unsigned char));
+        scaledImg.green[i] = malloc(newWidth * sizeof(unsigned char));
+        scaledImg.blue[i] = malloc(newWidth * sizeof(unsigned char));
+    }
+
+    // Redimensionner l'image
+    for (int i = 0; i < newWidth; i++) {
+        for (int j = 0; j < newHeight; j++) {
+            int originalX = (int)(i / scale);
+            int originalY = (int)(j / scale);
+
+            // Assurez-vous que les indices restent dans les limites de l'image d'origine
+            originalX = (originalX < 0) ? 0 : originalX;
+            originalY = (originalY < 0) ? 0 : originalY;
+            originalX = (originalX >= img->width) ? img->width - 1 : originalX;
+            originalY = (originalY >= img->height) ? img->height - 1 : originalY;
+
+            scaledImg.red[j][i] = img->red[originalY][originalX];
+            scaledImg.green[j][i] = img->green[originalY][originalX];
+            scaledImg.blue[j][i] = img->blue[originalY][originalX];
+        }
+    }
+
+    savePPM(&scaledImg, "./images/result/scaled_image.ppm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
 
 #endif
