@@ -25,8 +25,8 @@ int main(){
             if (strcmp(file_extension, ".pgm") == 0) {
                 struct imageNB* img;
                 loadPGM(&img, start);
-                // horizontalTranslatePGM(&img, 200);
-                // verticalTranslatePGM(&img, 200);
+                // horizontalTranslatePGM(&img, -200);
+                // verticalTranslatePGM(&img, -200);
                 // negatifPGM(&img);
                 // verticalMirrorPGM(&img);
                 // horizontalMirrorPGM(&img);
@@ -40,8 +40,8 @@ int main(){
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, start);
-                // horizontalTranslatePPM(&img, 200);
-                // verticalTranslatePPM(&img, 200);
+                // horizontalTranslatePPM(&img, -200);
+                // verticalTranslatePPM(&img, -200);
                 // negatifPPM(&img);
                 // horizontalMirrorPPM(&img);
                 // verticalMirrorPPM(&img);

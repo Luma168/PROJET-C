@@ -10,26 +10,21 @@ void horizontalTranslatePGM(struct imageNB* img, int decal)
     tr.width = img->width;
     tr.height = img->height;
     tr.vmax = img->vmax;
-    tr.color=malloc(tr.height * sizeof(unsigned char*));
-    int ii, i,j;
-    for (ii = 0; ii < tr.height; ii++) {
-        tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
+    tr.color = malloc(tr.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < tr.height; ii++) {
+        tr.color[ii] = malloc(tr.width * sizeof(unsigned char));
     }
-    for(i=0;i< img->width;i++)
-    {
-        for(j=0;j<img->height;j++)
-        {
-            if(i+decal <img->width)
-            {
-                tr.color[j][i+decal] = img->color[j][i];
-            }
-            else
-            {
-                tr.color[j][i+decal-img->width] = img->color[j][i];
-            }
+
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            int newJ = (j + decal) % img->width;
+            newJ = (newJ < 0) ? img->width + newJ : newJ;
+            tr.color[i][newJ] = img->color[i][j];
         }
     }
-    savePGM(&tr,"./images/result/translated_image.pgm");
+
+    savePGM(&tr, "./images/result/translated_image.pgm");
 }
 
 void verticalTranslatePGM(struct imageNB* img, int decal)
@@ -38,26 +33,21 @@ void verticalTranslatePGM(struct imageNB* img, int decal)
     tr.width = img->width;
     tr.height = img->height;
     tr.vmax = img->vmax;
-    tr.color=malloc(tr.height * sizeof(unsigned char*));
-    int ii, i,j;
-    for (ii = 0; ii < tr.height; ii++) {
-        tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
+    tr.color = malloc(tr.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < tr.height; ii++) {
+        tr.color[ii] = malloc(tr.width * sizeof(unsigned char));
     }
-    for(i=0;i< img->width;i++)
-    {
-        for(j=0;j<img->height;j++)
-        {
-            if(j+decal < img->height)
-            {
-                tr.color[j+decal][i] = img->color[j][i];
-            }
-            else
-            {
-                tr.color[j+decal-img->height][i] = img->color[j][i];
-            }
+
+    for (int i = 0; i < img->width; i++) {
+        for (int j = 0; j < img->height; j++) {
+            int newI = (j + decal) % img->height;
+            newI = (newI < 0) ? img->height + newI : newI;
+            tr.color[newI][i] = img->color[j][i];
         }
     }
-    savePGM(&tr,"./images/result/translated_image.pgm");
+
+    savePGM(&tr, "./images/result/translated_image.pgm");
 }
 
 void horizontalTranslatePPM(struct imageRGB* img, int decal)
@@ -65,39 +55,67 @@ void horizontalTranslatePPM(struct imageRGB* img, int decal)
     struct imageRGB tr;
     tr.width = img->width;
     tr.height = img->height;
-
+    
     tr.red = malloc(img->height * sizeof(unsigned char*));
     tr.green = malloc(img->height * sizeof(unsigned char*));
     tr.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(img->width * sizeof(unsigned char));
-        tr.green[i] = malloc(img->width * sizeof(unsigned char));
-        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tr.red[i] = malloc(tr.width * sizeof(unsigned char));
+        tr.green[i] = malloc(tr.width * sizeof(unsigned char));
+        tr.blue[i] = malloc(tr.width * sizeof(unsigned char));
     }
 
-    int i,j;
-    for(i=0;i< img->width;i++)
-    {
-        for(j=0;j<img->height;j++)
-        {
-            if(i+decal <img->width)
-            {
-                tr.red[j][i+decal] = img->red[j][i];
-                tr.green[j][i+decal] = img->green[j][i];
-                tr.blue[j][i+decal] = img->blue[j][i];
-            }
-            else
-            {
-                tr.red[j][i+decal-img->width] = img->red[j][i];
-                tr.green[j][i+decal-img->width] = img->green[j][i];
-                tr.blue[j][i+decal-img->width] = img->blue[j][i];
-            }
+    for (int i = 0; i < img->height; i++) {
+        for (int j = 0; j < img->width; j++) {
+            int newJ = (j + decal) % img->width;
+            newJ = (newJ < 0) ? img->width + newJ : newJ;
+            tr.red[i][newJ] = img->red[i][j];
+            tr.green[i][newJ] = img->green[i][j];
+            tr.blue[i][newJ] = img->blue[i][j];
         }
     }
-    savePPM(&tr,"./images/result/translated_image.ppm");
+
+    savePPM(&tr, "./images/result/translated_image.ppm");
 }
 
+// void verticalTranslatePPM(struct imageRGB* img, int decal)
+// {
+//     struct imageRGB tr;
+//     tr.width = img->width;
+//     tr.height = img->height;
+
+//     tr.red = malloc(img->height * sizeof(unsigned char*));
+//     tr.green = malloc(img->height * sizeof(unsigned char*));
+//     tr.blue = malloc(img->height * sizeof(unsigned char*));
+
+//     for (int i = 0; i < img->height; i++) {
+//         tr.red[i] = malloc(img->width * sizeof(unsigned char));
+//         tr.green[i] = malloc(img->width * sizeof(unsigned char));
+//         tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+//     }
+
+//     int i,j;
+//     for(i=0;i< img->width;i++)
+//     {
+//         for(j=0;j<img->height;j++)
+//         {
+//             if(j+decal < img->height)
+//             {
+//                 tr.red[j+decal][i] = img->red[j][i];
+//                 tr.green[j+decal][i] = img->green[j][i];
+//                 tr.blue[j+decal][i] = img->blue[j][i];
+//             }
+//             else
+//             {
+//                 tr.red[j+decal-img->height][i] = img->red[j][i];
+//                 tr.green[j+decal-img->height][i] = img->green[j][i];
+//                 tr.blue[j+decal-img->height][i] = img->blue[j][i];
+//             }
+//         }
+//     }
+//     savePPM(&tr,"./images/result/translated_image.ppm");
+// }
 void verticalTranslatePPM(struct imageRGB* img, int decal)
 {
     struct imageRGB tr;
@@ -109,31 +127,22 @@ void verticalTranslatePPM(struct imageRGB* img, int decal)
     tr.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(img->width * sizeof(unsigned char));
-        tr.green[i] = malloc(img->width * sizeof(unsigned char));
-        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tr.red[i] = malloc(tr.width * sizeof(unsigned char));
+        tr.green[i] = malloc(tr.width * sizeof(unsigned char));
+        tr.blue[i] = malloc(tr.width * sizeof(unsigned char));
     }
 
-    int i,j;
-    for(i=0;i< img->width;i++)
-    {
-        for(j=0;j<img->height;j++)
-        {
-            if(j+decal < img->height)
-            {
-                tr.red[j+decal][i] = img->red[j][i];
-                tr.green[j+decal][i] = img->green[j][i];
-                tr.blue[j+decal][i] = img->blue[j][i];
-            }
-            else
-            {
-                tr.red[j+decal-img->height][i] = img->red[j][i];
-                tr.green[j+decal-img->height][i] = img->green[j][i];
-                tr.blue[j+decal-img->height][i] = img->blue[j][i];
-            }
+    for (int i = 0; i < img->width; i++) {
+        for (int j = 0; j < img->height; j++) {
+            int newI = (j + decal) % img->height;
+            newI = (newI < 0) ? img->height + newI : newI;
+            tr.red[newI][i] = img->red[j][i];
+            tr.green[newI][i] = img->green[j][i];
+            tr.blue[newI][i] = img->blue[j][i];
         }
     }
-    savePPM(&tr,"./images/result/translated_image.ppm");
+
+    savePPM(&tr, "./images/result/translated_image.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
