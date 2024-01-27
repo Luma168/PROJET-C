@@ -36,6 +36,7 @@ int main(){
                 // pixeliserPGM(&img, 5);
                 // adjustContrastPGM(&img, 2);
                 // scalePGM(&img, 0.5);
+                // luminositePGM(&img, 100);
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, start);
@@ -50,6 +51,7 @@ int main(){
                 // pixeliserPPM(&img, 5);
                 // contrastPPM(&img, 3);
                 // scalePPM(&img, 0.5);
+                // luminositePPM(&img, 100);
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
             }
