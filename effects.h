@@ -658,6 +658,77 @@ void pixeliserPPM(struct imageRGB* img, int pixelSize)
 
 // --------------------------------------------------------------------------------------------------------------------
 
+void contrastPGM(struct imageNB* img, float factor)
+{
+    struct imageNB contrastAdjusted;
+    contrastAdjusted.width = img->width;
+    contrastAdjusted.height = img->height;
+    contrastAdjusted.vmax = img->vmax;
+    contrastAdjusted.color = malloc(contrastAdjusted.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < contrastAdjusted.height; ii++) {
+        contrastAdjusted.color[ii] = malloc(contrastAdjusted.width * sizeof(unsigned char));
+    }
+
+    // Adjust contrast for each pixel
+    for (int i = 0; i < img->width; i++) {
+        for (int j = 0; j < img->height; j++) {
+            float adjustedIntensity = (img->color[j][i] - img->vmax / 2.0) * factor + img->vmax / 2.0;
+
+            // Ensure the intensity stays within the valid range
+            adjustedIntensity = (adjustedIntensity < 0) ? 0 : adjustedIntensity;
+            adjustedIntensity = (adjustedIntensity > img->vmax) ? img->vmax : adjustedIntensity;
+
+            contrastAdjusted.color[j][i] = (unsigned char)adjustedIntensity;
+        }
+    }
+
+    savePGM(&contrastAdjusted, "./images/result/contrastAdjusted.pgm");
+}
+
+void contrastPPM(struct imageRGB* img, float factor)
+{
+    struct imageRGB contrastAdjusted;
+    contrastAdjusted.width = img->width;
+    contrastAdjusted.height = img->height;
+
+    contrastAdjusted.red = malloc(img->height * sizeof(unsigned char*));
+    contrastAdjusted.green = malloc(img->height * sizeof(unsigned char*));
+    contrastAdjusted.blue = malloc(img->height * sizeof(unsigned char*));
+
+    for (int i = 0; i < img->height; i++) {
+        contrastAdjusted.red[i] = malloc(img->width * sizeof(unsigned char));
+        contrastAdjusted.green[i] = malloc(img->width * sizeof(unsigned char));
+        contrastAdjusted.blue[i] = malloc(img->width * sizeof(unsigned char));
+    }
+
+    // Adjust contrast for each pixel in each channel
+    for (int i = 0; i < img->width; i++) {
+        for (int j = 0; j < img->height; j++) {
+            float adjustedRed = ((float)img->red[j][i] - 128) * factor + 128;
+            float adjustedGreen = ((float)img->green[j][i] - 128) * factor + 128;
+            float adjustedBlue = ((float)img->blue[j][i] - 128) * factor + 128;
+
+            // Ensure the intensity stays within the valid range
+            adjustedRed = (adjustedRed < 0) ? 0 : adjustedRed;
+            adjustedGreen = (adjustedGreen < 0) ? 0 : adjustedGreen;
+            adjustedBlue = (adjustedBlue < 0) ? 0 : adjustedBlue;
+
+            adjustedRed = (adjustedRed > 255) ? 255 : adjustedRed;
+            adjustedGreen = (adjustedGreen > 255) ? 255 : adjustedGreen;
+            adjustedBlue = (adjustedBlue > 255) ? 255 : adjustedBlue;
+
+            contrastAdjusted.red[j][i] = (unsigned char)adjustedRed;
+            contrastAdjusted.green[j][i] = (unsigned char)adjustedGreen;
+            contrastAdjusted.blue[j][i] = (unsigned char)adjustedBlue;
+        }
+    }
+
+    savePPM(&contrastAdjusted, "./images/result/contrastAdjusted.ppm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
 // void rotation(struct imageNB *img, double angle, bool clockwise)
 // {
 //     double radians = angle * M_PI / 180.0;

@@ -34,6 +34,7 @@ int main(){
                 // histogramme(&img);
                 // floutagePGM(&img, 5);
                 // pixeliserPGM(&img, 5);
+                // adjustContrastPGM(&img, 2);
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
                 loadPPM(&img, start);
@@ -46,6 +47,7 @@ int main(){
                 // ppmToPgm(&img);
                 // floutagePPM(&img, 5);
                 // pixeliserPPM(&img, 5);
+                // contrastPPM(&img, 3);
             } else {
                 fprintf(stderr, "Format d'image non pris en charge.\n");
             }
