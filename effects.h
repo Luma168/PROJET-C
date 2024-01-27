@@ -566,6 +566,98 @@ void floutagePPM(struct imageRGB* img, int blurDegree)
 
 // --------------------------------------------------------------------------------------------------------------------
 
+void pixeliserPGM(struct imageNB* img, int pixelSize)
+{
+    struct imageNB pixelized;
+    pixelized.width = img->width;
+    pixelized.height = img->height;
+    pixelized.vmax = img->vmax;
+    pixelized.color = malloc(pixelized.height * sizeof(unsigned char*));
+
+    for (int ii = 0; ii < pixelized.height; ii++) {
+        pixelized.color[ii] = malloc(pixelized.width * sizeof(unsigned char));
+    }
+
+    // Pixelize the image
+    for (int i = 0; i < img->width; i += pixelSize) {
+        for (int j = 0; j < img->height; j += pixelSize) {
+            int sum = 0;
+            int count = 0;
+
+            // Calculate the average intensity within the pixel
+            for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
+                for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
+                    sum += img->color[j + kj][i + ki];
+                    count++;
+                }
+            }
+
+            unsigned char avgIntensity = (unsigned char)(sum / count);
+
+            // Fill the pixelized image with the average intensity
+            for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
+                for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
+                    pixelized.color[j + kj][i + ki] = avgIntensity;
+                }
+            }
+        }
+    }
+
+    savePGM(&pixelized, "./images/result/pixelized.pgm");
+}
+
+void pixeliserPPM(struct imageRGB* img, int pixelSize)
+{
+    struct imageRGB pixelized;
+    pixelized.width = img->width;
+    pixelized.height = img->height;
+
+    pixelized.red = malloc(pixelized.height * sizeof(unsigned char*));
+    pixelized.green = malloc(pixelized.height * sizeof(unsigned char*));
+    pixelized.blue = malloc(pixelized.height * sizeof(unsigned char*));
+
+    for (int i = 0; i < pixelized.height; i++) {
+        pixelized.red[i] = malloc(pixelized.width * sizeof(unsigned char));
+        pixelized.green[i] = malloc(pixelized.width * sizeof(unsigned char));
+        pixelized.blue[i] = malloc(pixelized.width * sizeof(unsigned char));
+    }
+
+    // Pixelize the image
+    for (int i = 0; i < img->width; i += pixelSize) {
+        for (int j = 0; j < img->height; j += pixelSize) {
+            int sumRed = 0, sumGreen = 0, sumBlue = 0;
+            int count = 0;
+
+            // Calculate the average color within the pixel
+            for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
+                for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
+                    sumRed += img->red[j + kj][i + ki];
+                    sumGreen += img->green[j + kj][i + ki];
+                    sumBlue += img->blue[j + kj][i + ki];
+                    count++;
+                }
+            }
+
+            unsigned char avgRed = (unsigned char)(sumRed / count);
+            unsigned char avgGreen = (unsigned char)(sumGreen / count);
+            unsigned char avgBlue = (unsigned char)(sumBlue / count);
+
+            // Fill the pixelized image with the average color
+            for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
+                for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
+                    pixelized.red[j + kj][i + ki] = avgRed;
+                    pixelized.green[j + kj][i + ki] = avgGreen;
+                    pixelized.blue[j + kj][i + ki] = avgBlue;
+                }
+            }
+        }
+    }
+
+    savePPM(&pixelized, "./images/result/pixelized.ppm");
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+
 // void rotation(struct imageNB *img, double angle, bool clockwise)
 // {
 //     double radians = angle * M_PI / 180.0;
