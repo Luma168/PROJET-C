@@ -5,16 +5,21 @@
 #include "effects.h"
 
 int main(){
-    char* start = NULL;
-    size_t buffer_size = 0;
+    // char* start = NULL;
+    // size_t buffer_size = 0;
 
+    // printf("Saisissez le chemin vers l'image: ");
+    // ssize_t imgPath = getline(&start, &buffer_size, stdin);
+
+    // if (imgPath != -1) {
+    //     if (start[imgPath - 1] == '\n') {
+    //         start[imgPath - 1] = '\0';
+    //     }
+    char start[256];
     printf("Saisissez le chemin vers l'image: ");
-    ssize_t imgPath = getline(&start, &buffer_size, stdin);
 
-    if (imgPath != -1) {
-        if (start[imgPath - 1] == '\n') {
-            start[imgPath - 1] = '\0';
-        }
+    if(fgets(start,sizeof(start), stdin) != NULL){
+        start[strcspn(start,"\n")] = '\0';
 
         // Trouver l'extension du fichier
         char* file_extension = strrchr(start, '.');
