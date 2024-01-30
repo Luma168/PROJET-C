@@ -377,54 +377,99 @@ void ppmToPgm(struct imageRGB* img)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void histogramme(struct imageNB* img)
-{
-    // Create a histogram with 256 bins (assuming 8-bit grayscale image)
-    int histogram[256] = {0};
+// void histogramme(struct imageNB* img)
+// {
+//     // Create a histogram with 256 bins (assuming 8-bit grayscale image)
+//     int histogram[256] = {0};
 
-    // Calculate histogram
-    for (int i = 0; i < img->width; i++) {
-        for (int j = 0; j < img->height; j++) {
-            int intensity = img->color[j][i];
-            histogram[intensity]++;
+//     // Calculate histogram
+//     for (int i = 0; i < img->width; i++) {
+//         for (int j = 0; j < img->height; j++) {
+//             int intensity = img->color[j][i];
+//             histogram[intensity]++;
+//         }
+//     }
+
+//     // Find the maximum histogram value to scale the histogram
+//     int maxHistogramValue = 0;
+//     for (int i = 0; i < 256; i++) {
+//         if (histogram[i] > maxHistogramValue) {
+//             maxHistogramValue = histogram[i];
+//         }
+//     }
+
+//     // Create an image to represent the histogram
+//     struct imageNB histo;
+//     histo.width = 256; // 256 bins
+//     histo.height = maxHistogramValue + 1; // Add 1 to include intensity 0
+//     histo.vmax = 255; // Assuming 8-bit intensity values
+//     histo.color = malloc(histo.height * sizeof(unsigned char*));
+
+//     for (int ii = 0; ii < histo.height; ii++) {
+//         histo.color[ii] = malloc(histo.width * sizeof(unsigned char));
+//         for (int jj = 0; jj < histo.width; jj++) {
+//             histo.color[ii][jj] = 0; // Initialize to black
+//         }
+//     }
+
+//     // Populate the histogram image
+//     for (int i = 0; i < 256; i++) {
+//         int normalizedValue = (histogram[i] * histo.height) / maxHistogramValue;
+
+//         // Draw a vertical line in the histogram image
+//         for (int j = 0; j < normalizedValue; j++) {
+//             histo.color[histo.height - 1 - j][i] = 255; // Set intensity value (you may adjust this based on your requirements)
+//         }
+//     }
+
+//     // Save histogram as PGM image
+//     savePGM(&histo, "./images/result/histogramme.pgm");
+// }
+
+void generateHistogramGray(struct imageNB* image) {
+    FILE* file = fopen("./images/result/histo.pgm", "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme.\n");
+        return;
+    }
+
+    fprintf(file, "P2\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensité
+
+    // Calculer l'histogramme
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width; ++i) {
+        for (int j = 0; j < image->height; ++j) {
+            pixels[image->color[j][i]]++;
         }
     }
 
-    // Find the maximum histogram value to scale the histogram
-    int maxHistogramValue = 0;
-    for (int i = 0; i < 256; i++) {
-        if (histogram[i] > maxHistogramValue) {
-            maxHistogramValue = histogram[i];
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
         }
     }
 
-    // Create an image to represent the histogram
-    struct imageNB histo;
-    histo.width = 256; // 256 bins
-    histo.height = maxHistogramValue + 1; // Add 1 to include intensity 0
-    histo.vmax = 255; // Assuming 8-bit intensity values
-    histo.color = malloc(histo.height * sizeof(unsigned char*));
-
-    for (int ii = 0; ii < histo.height; ii++) {
-        histo.color[ii] = malloc(histo.width * sizeof(unsigned char));
-        for (int jj = 0; jj < histo.width; jj++) {
-            histo.color[ii][jj] = 0; // Initialize to black
+    // Normaliser et écrire l'histogramme dans le fichier PGM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 ");  // attribuer 0 pour les pixels représentant l'histogramme
+            } else {
+                fprintf(file, "255 ");  // attribuer 255 pour les pixels qui ne représentent pas l'histogramme
+            }
         }
+        fprintf(file, "\n");
     }
 
-    // Populate the histogram image
-    for (int i = 0; i < 256; i++) {
-        int normalizedValue = (histogram[i] * histo.height) / maxHistogramValue;
-
-        // Draw a vertical line in the histogram image
-        for (int j = 0; j < normalizedValue; j++) {
-            histo.color[histo.height - 1 - j][i] = 255; // Set intensity value (you may adjust this based on your requirements)
-        }
-    }
-
-    // Save histogram as PGM image
-    savePGM(&histo, "./images/result/histogramme.pgm");
+    fclose(file);
 }
+
+
 
 // --------------------------------------------------------------------------------------------------------------------
 
