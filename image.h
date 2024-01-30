@@ -26,8 +26,6 @@ void loadPGM(struct imageNB* img, char* nomImage)
         char chaine [3];
         int verif = fscanf(fichier,"%s", chaine);
 
-        printf("%s\n", chaine);
-
         if (chaine[1] == '5') // Egal au format p5
         {
             fscanf(fichier, "%d %d", &img->width, &img->height);
@@ -44,7 +42,6 @@ void loadPGM(struct imageNB* img, char* nomImage)
                 if(img->color[i] == NULL) printf("ERROR %d",i);
             }
 
-            printf("Height = %d\nWidth = %d, %d\n", img->height, img->width,img->vmax);
             for (i=0; i < img->width; i++ ){
                 for (j=0; j<img->height; j++){
                     unsigned char tmp;
@@ -111,8 +108,6 @@ void loadPPM(struct imageRGB* img, char* nomImage) {
             img->green[i] = malloc(img->width * sizeof(unsigned char));
             img->blue[i] = malloc(img->width * sizeof(unsigned char));
         }
-
-        printf("Height = %d\nWidth = %d, %d\n", img->height, img->width, vmax);
 
         for (int i = 0; i < img->width; i++) {
             for (int j = 0; j < img->height; j++) {

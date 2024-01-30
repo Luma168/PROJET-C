@@ -30,7 +30,7 @@ int main(){
                 printf("Choisissez l'effet:\n");
                 printf("1. Translation horizontale\n");
                 printf("2. Translation verticale\n");
-                printf("3. Négatif\n");
+                printf("3. Negatif\n");
                 printf("4. Miroir vertical\n");
                 printf("5. Miroir horizontal\n");
                 printf("6. Seuillage\n");
@@ -152,7 +152,7 @@ int main(){
                 printf("Choisissez l'effet:\n");
                 printf("1. Translation horizontale\n");
                 printf("2. Translation verticale\n");
-                printf("3. Négatif\n");
+                printf("3. Negatif\n");
                 printf("4. Miroir vertical\n");
                 printf("5. Miroir horizontal\n");
                 printf("6. Seuillage\n");

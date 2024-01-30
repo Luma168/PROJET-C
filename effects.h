@@ -550,23 +550,23 @@ void pixeliserPGM(struct imageNB* img, int pixelSize)
         pixelized.color[ii] = malloc(pixelized.width * sizeof(unsigned char));
     }
 
-    // Pixelize the image
+    // Parcourir l'image avec un pas egal a la taille du Grospixel
     for (int i = 0; i < img->width; i += pixelSize) {
         for (int j = 0; j < img->height; j += pixelSize) {
             int sum = 0;
             int count = 0;
 
-            // Calculate the average intensity within the pixel
+            // Calculer l'intensite moyenne dans le pixel
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
                     sum += img->color[j + kj][i + ki];
                     count++;
                 }
             }
-
+            // Intensite moyenne = somme des intensties / nb de pixels
             unsigned char avgIntensity = (unsigned char)(sum / count);
 
-            // Fill the pixelized image with the average intensity
+            // Affecter l'intensite moyenne a tous les pixels 
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
                     pixelized.color[j + kj][i + ki] = avgIntensity;
@@ -594,13 +594,11 @@ void pixeliserPPM(struct imageRGB* img, int pixelSize)
         pixelized.blue[i] = malloc(pixelized.width * sizeof(unsigned char));
     }
 
-    // Pixelize the image
     for (int i = 0; i < img->width; i += pixelSize) {
         for (int j = 0; j < img->height; j += pixelSize) {
             int sumRed = 0, sumGreen = 0, sumBlue = 0;
             int count = 0;
 
-            // Calculate the average color within the pixel
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
                     sumRed += img->red[j + kj][i + ki];
@@ -614,7 +612,6 @@ void pixeliserPPM(struct imageRGB* img, int pixelSize)
             unsigned char avgGreen = (unsigned char)(sumGreen / count);
             unsigned char avgBlue = (unsigned char)(sumBlue / count);
 
-            // Fill the pixelized image with the average color
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
                     pixelized.red[j + kj][i + ki] = avgRed;
@@ -641,13 +638,11 @@ void contrastPGM(struct imageNB* img, float factor)
     for (int ii = 0; ii < contrastAdjusted.height; ii++) {
         contrastAdjusted.color[ii] = malloc(contrastAdjusted.width * sizeof(unsigned char));
     }
-
-    // Adjust contrast for each pixel
+*
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
             float adjustedIntensity = (img->color[j][i] - img->vmax / 2.0) * factor + img->vmax / 2.0;
-
-            // Ensure the intensity stays within the valid range
+*
             adjustedIntensity = (adjustedIntensity < 0) ? 0 : adjustedIntensity;
             adjustedIntensity = (adjustedIntensity > img->vmax) ? img->vmax : adjustedIntensity;
 
@@ -674,14 +669,12 @@ void contrastPPM(struct imageRGB* img, float factor)
         contrastAdjusted.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
-    // Adjust contrast for each pixel in each channel
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
             float adjustedRed = ((float)img->red[j][i] - 128) * factor + 128;
             float adjustedGreen = ((float)img->green[j][i] - 128) * factor + 128;
             float adjustedBlue = ((float)img->blue[j][i] - 128) * factor + 128;
 
-            // Ensure the intensity stays within the valid range
             adjustedRed = (adjustedRed < 0) ? 0 : adjustedRed;
             adjustedGreen = (adjustedGreen < 0) ? 0 : adjustedGreen;
             adjustedBlue = (adjustedBlue < 0) ? 0 : adjustedBlue;
@@ -703,7 +696,6 @@ void contrastPPM(struct imageRGB* img, float factor)
 
 void scalePGM(struct imageNB* img, float scale)
 {
-    // Calculer les nouvelles dimensions de l'image
     int newWidth = (int)(img->width * scale);
     int newHeight = (int)(img->height * scale);
 
@@ -717,13 +709,11 @@ void scalePGM(struct imageNB* img, float scale)
         scaledImg.color[ii] = malloc(newWidth * sizeof(unsigned char));
     }
 
-    // Redimensionner l'image
     for (int i = 0; i < newWidth; i++) {
         for (int j = 0; j < newHeight; j++) {
             int originalX = (int)(i / scale);
             int originalY = (int)(j / scale);
 
-            // Assurez-vous que les indices restent dans les limites de l'image d'origine
             originalX = (originalX < 0) ? 0 : originalX;
             originalY = (originalY < 0) ? 0 : originalY;
             originalX = (originalX >= img->width) ? img->width - 1 : originalX;
@@ -738,7 +728,6 @@ void scalePGM(struct imageNB* img, float scale)
 
 void scalePPM(struct imageRGB* img, float scale)
 {
-    // Calculer les nouvelles dimensions de l'image
     int newWidth = (int)(img->width * scale);
     int newHeight = (int)(img->height * scale);
 
@@ -756,13 +745,11 @@ void scalePPM(struct imageRGB* img, float scale)
         scaledImg.blue[i] = malloc(newWidth * sizeof(unsigned char));
     }
 
-    // Redimensionner l'image
     for (int i = 0; i < newWidth; i++) {
         for (int j = 0; j < newHeight; j++) {
             int originalX = (int)(i / scale);
             int originalY = (int)(j / scale);
 
-            // Assurez-vous que les indices restent dans les limites de l'image d'origine
             originalX = (originalX < 0) ? 0 : originalX;
             originalY = (originalY < 0) ? 0 : originalY;
             originalX = (originalX >= img->width) ? img->width - 1 : originalX;
