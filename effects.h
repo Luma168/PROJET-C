@@ -770,13 +770,10 @@ void luminositePGM(struct imageNB* img, int brightness)
 {
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
-            // Ajouter la valeur de luminosité à chaque pixel
             int newPixelValue = img->color[i][j] + brightness;
 
-            // Assurez-vous que la valeur reste dans la plage [0, vmax]
             newPixelValue = (newPixelValue < 0) ? 0 : (newPixelValue > img->vmax) ? img->vmax : newPixelValue;
 
-            // Mettez à jour la valeur du pixel avec la nouvelle valeur
             img->color[i][j] = newPixelValue;
         }
     }
@@ -788,17 +785,14 @@ void luminositePPM(struct imageRGB* img, int brightness)
 {
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
-            // Ajouter la valeur de luminosité à chaque composante de couleur
             int newRed = img->red[i][j] + brightness;
             int newGreen = img->green[i][j] + brightness;
             int newBlue = img->blue[i][j] + brightness;
 
-            // Assurez-vous que les valeurs restent dans la plage [0, 255]
             newRed = (newRed < 0) ? 0 : (newRed > 255) ? 255 : newRed;
             newGreen = (newGreen < 0) ? 0 : (newGreen > 255) ? 255 : newGreen;
             newBlue = (newBlue < 0) ? 0 : (newBlue > 255) ? 255 : newBlue;
 
-            // Mettez à jour les composantes de couleur avec les nouvelles valeurs
             img->red[i][j] = newRed;
             img->green[i][j] = newGreen;
             img->blue[i][j] = newBlue;
