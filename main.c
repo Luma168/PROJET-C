@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "image.h"
 #include "effects.h"
 
@@ -44,6 +45,7 @@ int main(){
                 printf("10. Ajuster le contraste\n");
                 printf("11. Redimensionner (scale)\n");
                 printf("12. Ajuster la luminosite\n");
+                printf("13. Rotate\n");
 
                 scanf("%d", &choice);
 
@@ -142,6 +144,20 @@ int main(){
                             printf("Saisissez la valeur de luminosite: ");
                             scanf("%d", &valeurLuminosite);
                             luminositePGM(&img, valeurLuminosite);
+                            break;
+                        }
+                    case 13:
+                        // Rotate
+                        {
+                            double angle;
+                            printf("Entrez l'angle de rotation en degres : ");
+                            scanf("%lf", &angle);
+
+                            // Assurez-vous que l'angle est dans la plage souhaitée, par exemple -360 à 360 degrés
+                            angle = fmod(angle, 360.0);
+
+                            rotatePGM(&img, angle);
+                            savePGM(&img, "./images/result/rotate.pgm");
                             break;
                         }
                     default:
@@ -275,7 +291,6 @@ int main(){
         } else {
             fprintf(stderr, "L'extension du fichier est introuvable.\n");
         }
-        
     } else {
         fprintf(stderr, "Erreur lors de la saisie.\n");
     }
