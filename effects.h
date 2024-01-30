@@ -638,11 +638,11 @@ void contrastPGM(struct imageNB* img, float factor)
     for (int ii = 0; ii < contrastAdjusted.height; ii++) {
         contrastAdjusted.color[ii] = malloc(contrastAdjusted.width * sizeof(unsigned char));
     }
-*
+
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
             float adjustedIntensity = (img->color[j][i] - img->vmax / 2.0) * factor + img->vmax / 2.0;
-*
+
             adjustedIntensity = (adjustedIntensity < 0) ? 0 : adjustedIntensity;
             adjustedIntensity = (adjustedIntensity > img->vmax) ? img->vmax : adjustedIntensity;
 

@@ -9,11 +9,9 @@ int main(){
     size_t buffer_size = 0;
 
     printf("Saisissez le chemin vers l'image: ");
-    // getline pour saisir la ligne complète, y compris les espaces
     ssize_t imgPath = getline(&start, &buffer_size, stdin);
 
     if (imgPath != -1) {
-        // Supprimer le caractère de nouvelle ligne à la fin de la chaîne
         if (start[imgPath - 1] == '\n') {
             start[imgPath - 1] = '\0';
         }
@@ -275,7 +273,6 @@ int main(){
     } else {
         fprintf(stderr, "Erreur lors de la saisie.\n");
     }
-
 
     return 0;
 }
