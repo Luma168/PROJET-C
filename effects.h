@@ -7,281 +7,281 @@
 
 void horizontalTranslatePGM(struct imageNB* img, int decal)
 {
-    struct imageNB tr;
-    tr.width = img->width;
-    tr.height = img->height;
-    tr.vmax = img->vmax;
-    tr.color = malloc(tr.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < tr.height; ii++) {
-        tr.color[ii] = malloc(tr.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->height; i++) {
         for (int j = 0; j < img->width; j++) {
             int newJ = (j + decal) % img->width;
             newJ = (newJ < 0) ? img->width + newJ : newJ;
-            tr.color[i][newJ] = img->color[i][j];
+            tmp.color[i][newJ] = img->color[i][j];
         }
     }
 
-    savePGM(&tr, "./images/result/translated_image.pgm");
+    savePGM(&tmp, "./images/result/horizontal_translated_image.pgm");
 }
 
 void verticalTranslatePGM(struct imageNB* img, int decal)
 {
-    struct imageNB tr;
-    tr.width = img->width;
-    tr.height = img->height;
-    tr.vmax = img->vmax;
-    tr.color = malloc(tr.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < tr.height; ii++) {
-        tr.color[ii] = malloc(tr.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
             int newI = (j + decal) % img->height;
             newI = (newI < 0) ? img->height + newI : newI;
-            tr.color[newI][i] = img->color[j][i];
+            tmp.color[newI][i] = img->color[j][i];
         }
     }
 
-    savePGM(&tr, "./images/result/translated_image.pgm");
+    savePGM(&tmp, "./images/result/vertical_translated_image.pgm");
 }
 
 void horizontalTranslatePPM(struct imageRGB* img, int decal)
 {
-    struct imageRGB tr;
-    tr.width = img->width;
-    tr.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
     
-    tr.red = malloc(img->height * sizeof(unsigned char*));
-    tr.green = malloc(img->height * sizeof(unsigned char*));
-    tr.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(tr.width * sizeof(unsigned char));
-        tr.green[i] = malloc(tr.width * sizeof(unsigned char));
-        tr.blue[i] = malloc(tr.width * sizeof(unsigned char));
+        tmp.red[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.green[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->height; i++) {
         for (int j = 0; j < img->width; j++) {
             int newJ = (j + decal) % img->width;
             newJ = (newJ < 0) ? img->width + newJ : newJ;
-            tr.red[i][newJ] = img->red[i][j];
-            tr.green[i][newJ] = img->green[i][j];
-            tr.blue[i][newJ] = img->blue[i][j];
+            tmp.red[i][newJ] = img->red[i][j];
+            tmp.green[i][newJ] = img->green[i][j];
+            tmp.blue[i][newJ] = img->blue[i][j];
         }
     }
 
-    savePPM(&tr, "./images/result/translated_image.ppm");
+    savePPM(&tmp, "./images/result/horizontal_translated_image.ppm");
 }
 
 void verticalTranslatePPM(struct imageRGB* img, int decal)
 {
-    struct imageRGB tr;
-    tr.width = img->width;
-    tr.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    tr.red = malloc(img->height * sizeof(unsigned char*));
-    tr.green = malloc(img->height * sizeof(unsigned char*));
-    tr.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(tr.width * sizeof(unsigned char));
-        tr.green[i] = malloc(tr.width * sizeof(unsigned char));
-        tr.blue[i] = malloc(tr.width * sizeof(unsigned char));
+        tmp.red[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.green[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
             int newI = (j + decal) % img->height;
             newI = (newI < 0) ? img->height + newI : newI;
-            tr.red[newI][i] = img->red[j][i];
-            tr.green[newI][i] = img->green[j][i];
-            tr.blue[newI][i] = img->blue[j][i];
+            tmp.red[newI][i] = img->red[j][i];
+            tmp.green[newI][i] = img->green[j][i];
+            tmp.blue[newI][i] = img->blue[j][i];
         }
     }
 
-    savePPM(&tr, "./images/result/translated_image.ppm");
+    savePPM(&tmp, "./images/result/vertical_translated_image.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
 void negatifPGM(struct imageNB* img)
 {
-    struct imageNB tr;
-    tr.width = img->width;
-    tr.height = img->height;
-    tr.vmax = img->vmax;
-    tr.color=malloc(tr.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color=malloc(tmp.height * sizeof(unsigned char*));
     int ii, i,j;
-    for (ii = 0; ii < tr.height; ii++) {
-        tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
+    for (ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii]= malloc(tmp.width * sizeof(unsigned char));
     }
 
-    for (int i=0; i < tr.width; i++ ){
-        for (int j=0; j<tr.height; j++){
-            tr.color[i][j]= 1 - (img->color[i][j]);
+    for (int i=0; i < tmp.width; i++ ){
+        for (int j=0; j<tmp.height; j++){
+            tmp.color[i][j]= 1 - (img->color[i][j]);
         }
     }
-    savePGM(&tr,"./images/result/negatif.pgm");
+    savePGM(&tmp,"./images/result/negatif.pgm");
 }
 
 void negatifPPM(struct imageRGB* img)
 {
-    struct imageRGB tr;
-    tr.width = img->width;
-    tr.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    tr.red = malloc(img->height * sizeof(unsigned char*));
-    tr.green = malloc(img->height * sizeof(unsigned char*));
-    tr.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(img->width * sizeof(unsigned char));
-        tr.green[i] = malloc(img->width * sizeof(unsigned char));
-        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.red[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.green[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
-    for (int i=0; i < tr.width; i++ ){
-        for (int j=0; j<tr.height; j++){
-            tr.red[i][j]= 1 - (img->red[i][j]);
-            tr.green[i][j]= 1 - (img->green[i][j]);
-            tr.blue[i][j]= 1 - (img->blue[i][j]);
+    for (int i=0; i < tmp.width; i++ ){
+        for (int j=0; j<tmp.height; j++){
+            tmp.red[i][j]= 1 - (img->red[i][j]);
+            tmp.green[i][j]= 1 - (img->green[i][j]);
+            tmp.blue[i][j]= 1 - (img->blue[i][j]);
         }
     }
-    savePPM(&tr,"./images/result/negatif.ppm");
+    savePPM(&tmp,"./images/result/negatif.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
 void horizontalMirrorPGM(struct imageNB* img)
 {
-    struct imageNB tr;
-    tr.width = img->width;
-    tr.height = img->height;
-    tr.vmax = img->vmax;
-    tr.color=malloc(tr.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color=malloc(tmp.height * sizeof(unsigned char*));
     int ii, i,j;
-    for (ii = 0; ii < tr.height; ii++) {
-        tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
+    for (ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii]= malloc(tmp.width * sizeof(unsigned char));
     }
 
-    for (int i=0; i < tr.height; i++ ){
-        for (int j=0; j <= tr.width/2; j++){
-            unsigned char tmp = img->color[i][j];
-            tr.color[i][j] = img->color[i][tr.width-j];
-            tr.color[i][tr.width-j] = tmp;
+    for (int i=0; i < tmp.height; i++ ){
+        for (int j=0; j <= tmp.width/2; j++){
+            unsigned char tmpColor = img->color[i][j];
+            tmp.color[i][j] = img->color[i][tmp.width-j];
+            tmp.color[i][tmp.width-j] = tmpColor;
         }
     }
-    savePGM(&tr,"./images/result/mirror.pgm");
+    savePGM(&tmp,"./images/result/horizontal_mirror.pgm");
 }
 
 void horizontalMirrorPPM(struct imageRGB* img)
 {
-    struct imageRGB tr;
-    tr.width = img->width;
-    tr.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    tr.red = malloc(img->height * sizeof(unsigned char*));
-    tr.green = malloc(img->height * sizeof(unsigned char*));
-    tr.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(img->width * sizeof(unsigned char));
-        tr.green[i] = malloc(img->width * sizeof(unsigned char));
-        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.red[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.green[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
-    for (int i=0; i < tr.height; i++ ){
-        for (int j=0; j <= tr.width/2; j++){
+    for (int i=0; i < tmp.height; i++ ){
+        for (int j=0; j <= tmp.width/2; j++){
             float tmpRed = img->red[i][j];
             float tmpGreen = img->green[i][j];
             float tmpBlue = img->blue[i][j];
 
-            tr.red[i][j] = img->red[i][tr.width-j];
-            tr.green[i][j] = img->green[i][tr.width-j];
-            tr.blue[i][j] = img->blue[i][tr.width-j];
+            tmp.red[i][j] = img->red[i][tmp.width-j];
+            tmp.green[i][j] = img->green[i][tmp.width-j];
+            tmp.blue[i][j] = img->blue[i][tmp.width-j];
 
-            tr.red[i][tr.width-j] = tmpRed;
-            tr.green[i][tr.width-j] = tmpGreen;
-            tr.blue[i][tr.width-j] = tmpBlue;
+            tmp.red[i][tmp.width-j] = tmpRed;
+            tmp.green[i][tmp.width-j] = tmpGreen;
+            tmp.blue[i][tmp.width-j] = tmpBlue;
         }
     }
-    savePPM(&tr,"./images/result/mirror.ppm");
+    savePPM(&tmp,"./images/result/horizontal_mirror.ppm");
 }
 
 void verticalMirrorPGM(struct imageNB* img)
 {
-    struct imageNB tr;
-    tr.width = img->width;
-    tr.height = img->height;
-    tr.vmax = img->vmax;
-    tr.color=malloc(tr.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color=malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < tr.height; ii++) {
-        tr.color[ii]= malloc(tr.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii]= malloc(tmp.width * sizeof(unsigned char));
     }
 
-     for (int i = 0; i < tr.height / 2; i++) {
-        for (int j = 0; j < tr.width; j++) {
-            unsigned char tmp = img->color[i][j];
-            tr.color[i][j] = img->color[tr.height - 1 - i][j];
-            tr.color[tr.height - 1 - i][j] = tmp;
+     for (int i = 0; i < tmp.height / 2; i++) {
+        for (int j = 0; j < tmp.width; j++) {
+            unsigned char tmpColor = img->color[i][j];
+            tmp.color[i][j] = img->color[tmp.height - 1 - i][j];
+            tmp.color[tmp.height - 1 - i][j] = tmpColor;
         }
     }
-    savePGM(&tr,"./images/result/mirror.pgm");
+    savePGM(&tmp,"./images/result/vertical_mirror.pgm");
 }
 
 void verticalMirrorPPM(struct imageRGB* img)
 {
-    struct imageRGB tr;
-    tr.width = img->width;
-    tr.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    tr.red = malloc(img->height * sizeof(unsigned char*));
-    tr.green = malloc(img->height * sizeof(unsigned char*));
-    tr.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        tr.red[i] = malloc(img->width * sizeof(unsigned char));
-        tr.green[i] = malloc(img->width * sizeof(unsigned char));
-        tr.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.red[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.green[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
-    for (int i = 0; i < tr.height; i++) {
-        for (int j = 0; j < tr.width; j++) {
+    for (int i = 0; i < tmp.height; i++) {
+        for (int j = 0; j < tmp.width; j++) {
             float tmpRed = img->red[i][j];
             float tmpGreen = img->green[i][j];
             float tmpBlue = img->blue[i][j];
 
-            tr.red[i][j] = img->red[tr.height - i - 1][j];
-            tr.green[i][j] = img->green[tr.height - i - 1][j];
-            tr.blue[i][j] = img->blue[tr.height - i - 1][j];
+            tmp.red[i][j] = img->red[tmp.height - i - 1][j];
+            tmp.green[i][j] = img->green[tmp.height - i - 1][j];
+            tmp.blue[i][j] = img->blue[tmp.height - i - 1][j];
 
-            tr.red[tr.height - i - 1][j] = tmpRed;
-            tr.green[tr.height - i - 1][j] = tmpGreen;
-            tr.blue[tr.height - i - 1][j] = tmpBlue;
+            tmp.red[tmp.height - i - 1][j] = tmpRed;
+            tmp.green[tmp.height - i - 1][j] = tmpGreen;
+            tmp.blue[tmp.height - i - 1][j] = tmpBlue;
         }
     }
-    savePPM(&tr,"./images/result/mirror.ppm");
+    savePPM(&tmp,"./images/result/vertical_mirror.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
 void seuillagePGM(struct imageNB* img, int seuil)
 {
-    struct imageNB seu;
-    seu.width = img->width;
-    seu.height = img->height;
-    seu.vmax = img->vmax;
-    seu.color=malloc(seu.height * sizeof(unsigned char*));
-    for (int ii = 0; ii < seu.height; ii++) {
-        seu.color[ii]= malloc(seu.width * sizeof(unsigned char));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color=malloc(tmp.height * sizeof(unsigned char*));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii]= malloc(tmp.width * sizeof(unsigned char));
     }
 
     for(int i=0;i< img->width;i++)
@@ -290,31 +290,31 @@ void seuillagePGM(struct imageNB* img, int seuil)
         {
             if(img->color[i][j] > seuil)
             {
-                seu.color[i][j] = seuil;
+                tmp.color[i][j] = seuil;
             }
             else
             {
-                seu.color[i][j] = img->color[i][j];
+                tmp.color[i][j] = img->color[i][j];
             }
         }
     }
-    savePGM(&seu,"./images/result/seuillage.pgm");
+    savePGM(&tmp,"./images/result/seuillage.pgm");
 }
 
 void seuillagePPM(struct imageRGB* img, int seuil)
 {
-    struct imageRGB seu;
-    seu.width = img->width;
-    seu.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    seu.red = malloc(img->height * sizeof(unsigned char*));
-    seu.green = malloc(img->height * sizeof(unsigned char*));
-    seu.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        seu.red[i] = malloc(img->width * sizeof(unsigned char));
-        seu.green[i] = malloc(img->width * sizeof(unsigned char));
-        seu.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.red[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.green[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
     for(int i=0;i< img->width;i++)
@@ -323,33 +323,33 @@ void seuillagePPM(struct imageRGB* img, int seuil)
         {
             if(img->red[i][j] > seuil)
             {
-                seu.red[i][j] = seuil;
+                tmp.red[i][j] = seuil;
             }
             else
             {
-                seu.red[i][j] = img->red[i][j];
+                tmp.red[i][j] = img->red[i][j];
             }
 
             if(img->green[i][j] > seuil)
             {
-                seu.green[i][j] = seuil;
+                tmp.green[i][j] = seuil;
             }
             else
             {
-                seu.green[i][j] = img->green[i][j];
+                tmp.green[i][j] = img->green[i][j];
             }
 
             if(img->blue[i][j] > seuil)
             {
-                seu.blue[i][j] = seuil;
+                tmp.blue[i][j] = seuil;
             }
             else
             {
-                seu.blue[i][j] = img->blue[i][j];
+                tmp.blue[i][j] = img->blue[i][j];
             }
         }
     }
-    savePPM(&seu,"./images/result/seuillage.ppm");
+    savePPM(&tmp,"./images/result/seuillage.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -378,55 +378,6 @@ void ppmToPgm(struct imageRGB* img)
 
 // --------------------------------------------------------------------------------------------------------------------
 
-// void histogramme(struct imageNB* img)
-// {
-//     // Create a histogram with 256 bins (assuming 8-bit grayscale image)
-//     int histogram[256] = {0};
-
-//     // Calculate histogram
-//     for (int i = 0; i < img->width; i++) {
-//         for (int j = 0; j < img->height; j++) {
-//             int intensity = img->color[j][i];
-//             histogram[intensity]++;
-//         }
-//     }
-
-//     // Find the maximum histogram value to scale the histogram
-//     int maxHistogramValue = 0;
-//     for (int i = 0; i < 256; i++) {
-//         if (histogram[i] > maxHistogramValue) {
-//             maxHistogramValue = histogram[i];
-//         }
-//     }
-
-//     // Create an image to represent the histogram
-//     struct imageNB histo;
-//     histo.width = 256; // 256 bins
-//     histo.height = maxHistogramValue + 1; // Add 1 to include intensity 0
-//     histo.vmax = 255; // Assuming 8-bit intensity values
-//     histo.color = malloc(histo.height * sizeof(unsigned char*));
-
-//     for (int ii = 0; ii < histo.height; ii++) {
-//         histo.color[ii] = malloc(histo.width * sizeof(unsigned char));
-//         for (int jj = 0; jj < histo.width; jj++) {
-//             histo.color[ii][jj] = 0; // Initialize to black
-//         }
-//     }
-
-//     // Populate the histogram image
-//     for (int i = 0; i < 256; i++) {
-//         int normalizedValue = (histogram[i] * histo.height) / maxHistogramValue;
-
-//         // Draw a vertical line in the histogram image
-//         for (int j = 0; j < normalizedValue; j++) {
-//             histo.color[histo.height - 1 - j][i] = 255; // Set intensity value (you may adjust this based on your requirements)
-//         }
-//     }
-
-//     // Save histogram as PGM image
-//     savePGM(&histo, "./images/result/histogramme.pgm");
-// }
-
 void generateHistogramGray(struct imageNB* image) {
     FILE* file = fopen("./images/result/histo.pgm", "w");
     if (!file) {
@@ -435,8 +386,8 @@ void generateHistogramGray(struct imageNB* image) {
     }
 
     fprintf(file, "P2\n");
-    fprintf(file, "256 256\n"); // Taille de l'histogramme
-    fprintf(file, "255\n"); // Valeur maximale d'intensité
+    fprintf(file, "256 256\n");
+    fprintf(file, "255\n"); 
 
     // Calculer l'histogramme
     int pixels[256] = {0};
@@ -478,8 +429,8 @@ void generateHistogramRed(struct imageRGB* image) {
     }
 
     fprintf(file, "P2\n");
-    fprintf(file, "256 256\n"); // Taille de l'histogramme
-    fprintf(file, "255\n"); // Valeur maximale d'intensité
+    fprintf(file, "256 256\n");
+    fprintf(file, "255\n");
 
     // Calculer l'histogramme du canal rouge
     int pixels[256] = {0};
@@ -521,8 +472,8 @@ void generateHistogramGreen(struct imageRGB* image) {
     }
 
     fprintf(file, "P2\n");
-    fprintf(file, "256 256\n"); // Taille de l'histogramme
-    fprintf(file, "255\n"); // Valeur maximale d'intensité
+    fprintf(file, "256 256\n");
+    fprintf(file, "255\n");
 
     // Calculer l'histogramme du canal vert
     int pixels[256] = {0};
@@ -564,8 +515,8 @@ void generateHistogramBlue(struct imageRGB* image) {
     }
 
     fprintf(file, "P2\n");
-    fprintf(file, "256 256\n"); // Taille de l'histogramme
-    fprintf(file, "255\n"); // Valeur maximale d'intensité
+    fprintf(file, "256 256\n");
+    fprintf(file, "255\n");
 
     // Calculer l'histogramme du canal bleu
     int pixels[256] = {0};
@@ -602,16 +553,16 @@ void generateHistogramBlue(struct imageRGB* image) {
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void floutagePGM(struct imageNB* img, int blurDegree)
+void blurPGM(struct imageNB* img, int blurDegree)
 {
-    struct imageNB blurred;
-    blurred.width = img->width;
-    blurred.height = img->height;
-    blurred.vmax = img->vmax;
-    blurred.color = malloc(blurred.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < blurred.height; ii++) {
-        blurred.color[ii] = malloc(blurred.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     // Calculate the blur kernel size based on the blur degree
@@ -639,33 +590,27 @@ void floutagePGM(struct imageNB* img, int blurDegree)
                     sum += img->color[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
                 }
             }
-            blurred.color[j][i] = sum / (kernelSize * kernelSize); // Normalize by the sum of kernel values
+            tmp.color[j][i] = sum / (kernelSize * kernelSize); // Normalize by the sum of kernel values
         }
     }
 
-    // Free the dynamically allocated memory for the kernel
-    for (int i = 0; i < kernelSize; i++) {
-        free(kernel[i]);
-    }
-    free(kernel);
-
-    savePGM(&blurred, "./images/result/blurred.pgm");
+    savePGM(&tmp, "./images/result/blurred.pgm");
 }
 
-void floutagePPM(struct imageRGB* img, int blurDegree)
+void blurPPM(struct imageRGB* img, int blurDegree)
 {
-    struct imageRGB blurred;
-    blurred.width = img->width;
-    blurred.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    blurred.red = malloc(blurred.height * sizeof(unsigned char*));
-    blurred.green = malloc(blurred.height * sizeof(unsigned char*));
-    blurred.blue = malloc(blurred.height * sizeof(unsigned char*));
+    tmp.red = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.green = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.blue = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int i = 0; i < blurred.height; i++) {
-        blurred.red[i] = malloc(blurred.width * sizeof(unsigned char));
-        blurred.green[i] = malloc(blurred.width * sizeof(unsigned char));
-        blurred.blue[i] = malloc(blurred.width * sizeof(unsigned char));
+    for (int i = 0; i < tmp.height; i++) {
+        tmp.red[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.green[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     // Calculate the blur kernel size based on the blur degree
@@ -695,33 +640,27 @@ void floutagePPM(struct imageRGB* img, int blurDegree)
                     sumBlue += img->blue[j + kj][i + ki] * kernel[kj + blurDegree][ki + blurDegree];
                 }
             }
-            blurred.red[j][i] = sumRed / (kernelSize * kernelSize); // Normalize by the sum of kernel values
-            blurred.green[j][i] = sumGreen / (kernelSize * kernelSize);
-            blurred.blue[j][i] = sumBlue / (kernelSize * kernelSize);
+            tmp.red[j][i] = sumRed / (kernelSize * kernelSize); // Normalize by the sum of kernel values
+            tmp.green[j][i] = sumGreen / (kernelSize * kernelSize);
+            tmp.blue[j][i] = sumBlue / (kernelSize * kernelSize);
         }
     }
 
-    // Free the dynamically allocated memory for the kernel
-    for (int i = 0; i < kernelSize; i++) {
-        free(kernel[i]);
-    }
-    free(kernel);
-
-    savePPM(&blurred, "./images/result/blurred.ppm");
+    savePPM(&tmp, "./images/result/blurred.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void pixeliserPGM(struct imageNB* img, int pixelSize)
+void pixelatePGM(struct imageNB* img, int pixelSize)
 {
-    struct imageNB pixelized;
-    pixelized.width = img->width;
-    pixelized.height = img->height;
-    pixelized.vmax = img->vmax;
-    pixelized.color = malloc(pixelized.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < pixelized.height; ii++) {
-        pixelized.color[ii] = malloc(pixelized.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     // Parcourir l'image avec un pas egal a la taille du Grospixel
@@ -743,29 +682,29 @@ void pixeliserPGM(struct imageNB* img, int pixelSize)
             // Affecter l'intensite moyenne a tous les pixels 
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
-                    pixelized.color[j + kj][i + ki] = avgIntensity;
+                    tmp.color[j + kj][i + ki] = avgIntensity;
                 }
             }
         }
     }
 
-    savePGM(&pixelized, "./images/result/pixelized.pgm");
+    savePGM(&tmp, "./images/result/pixelized.pgm");
 }
 
-void pixeliserPPM(struct imageRGB* img, int pixelSize)
+void pixelatePPM(struct imageRGB* img, int pixelSize)
 {
-    struct imageRGB pixelized;
-    pixelized.width = img->width;
-    pixelized.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    pixelized.red = malloc(pixelized.height * sizeof(unsigned char*));
-    pixelized.green = malloc(pixelized.height * sizeof(unsigned char*));
-    pixelized.blue = malloc(pixelized.height * sizeof(unsigned char*));
+    tmp.red = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.green = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.blue = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int i = 0; i < pixelized.height; i++) {
-        pixelized.red[i] = malloc(pixelized.width * sizeof(unsigned char));
-        pixelized.green[i] = malloc(pixelized.width * sizeof(unsigned char));
-        pixelized.blue[i] = malloc(pixelized.width * sizeof(unsigned char));
+    for (int i = 0; i < tmp.height; i++) {
+        tmp.red[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.green[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->width; i += pixelSize) {
@@ -788,29 +727,29 @@ void pixeliserPPM(struct imageRGB* img, int pixelSize)
 
             for (int ki = 0; ki < pixelSize && i + ki < img->width; ki++) {
                 for (int kj = 0; kj < pixelSize && j + kj < img->height; kj++) {
-                    pixelized.red[j + kj][i + ki] = avgRed;
-                    pixelized.green[j + kj][i + ki] = avgGreen;
-                    pixelized.blue[j + kj][i + ki] = avgBlue;
+                    tmp.red[j + kj][i + ki] = avgRed;
+                    tmp.green[j + kj][i + ki] = avgGreen;
+                    tmp.blue[j + kj][i + ki] = avgBlue;
                 }
             }
         }
     }
 
-    savePPM(&pixelized, "./images/result/pixelized.ppm");
+    savePPM(&tmp, "./images/result/pixelized.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
 void contrastPGM(struct imageNB* img, float factor)
 {
-    struct imageNB contrastAdjusted;
-    contrastAdjusted.width = img->width;
-    contrastAdjusted.height = img->height;
-    contrastAdjusted.vmax = img->vmax;
-    contrastAdjusted.color = malloc(contrastAdjusted.height * sizeof(unsigned char*));
+    struct imageNB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
+    tmp.vmax = img->vmax;
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int ii = 0; ii < contrastAdjusted.height; ii++) {
-        contrastAdjusted.color[ii] = malloc(contrastAdjusted.width * sizeof(unsigned char));
+    for (int ii = 0; ii < tmp.height; ii++) {
+        tmp.color[ii] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->width; i++) {
@@ -820,27 +759,27 @@ void contrastPGM(struct imageNB* img, float factor)
             adjustedIntensity = (adjustedIntensity < 0) ? 0 : adjustedIntensity;
             adjustedIntensity = (adjustedIntensity > img->vmax) ? img->vmax : adjustedIntensity;
 
-            contrastAdjusted.color[j][i] = (unsigned char)adjustedIntensity;
+            tmp.color[j][i] = (unsigned char)adjustedIntensity;
         }
     }
 
-    savePGM(&contrastAdjusted, "./images/result/contrastAdjusted.pgm");
+    savePGM(&tmp, "./images/result/contrastAdjusted.pgm");
 }
 
 void contrastPPM(struct imageRGB* img, float factor)
 {
-    struct imageRGB contrastAdjusted;
-    contrastAdjusted.width = img->width;
-    contrastAdjusted.height = img->height;
+    struct imageRGB tmp;
+    tmp.width = img->width;
+    tmp.height = img->height;
 
-    contrastAdjusted.red = malloc(img->height * sizeof(unsigned char*));
-    contrastAdjusted.green = malloc(img->height * sizeof(unsigned char*));
-    contrastAdjusted.blue = malloc(img->height * sizeof(unsigned char*));
+    tmp.red = malloc(img->height * sizeof(unsigned char*));
+    tmp.green = malloc(img->height * sizeof(unsigned char*));
+    tmp.blue = malloc(img->height * sizeof(unsigned char*));
 
     for (int i = 0; i < img->height; i++) {
-        contrastAdjusted.red[i] = malloc(img->width * sizeof(unsigned char));
-        contrastAdjusted.green[i] = malloc(img->width * sizeof(unsigned char));
-        contrastAdjusted.blue[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.red[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.green[i] = malloc(img->width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(img->width * sizeof(unsigned char));
     }
 
     for (int i = 0; i < img->width; i++) {
@@ -857,13 +796,13 @@ void contrastPPM(struct imageRGB* img, float factor)
             adjustedGreen = (adjustedGreen > 255) ? 255 : adjustedGreen;
             adjustedBlue = (adjustedBlue > 255) ? 255 : adjustedBlue;
 
-            contrastAdjusted.red[j][i] = (unsigned char)adjustedRed;
-            contrastAdjusted.green[j][i] = (unsigned char)adjustedGreen;
-            contrastAdjusted.blue[j][i] = (unsigned char)adjustedBlue;
+            tmp.red[j][i] = (unsigned char)adjustedRed;
+            tmp.green[j][i] = (unsigned char)adjustedGreen;
+            tmp.blue[j][i] = (unsigned char)adjustedBlue;
         }
     }
 
-    savePPM(&contrastAdjusted, "./images/result/contrastAdjusted.ppm");
+    savePPM(&tmp, "./images/result/contrastAdjusted.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -873,14 +812,14 @@ void scalePGM(struct imageNB* img, float scale)
     int newWidth = (int)(img->width * scale);
     int newHeight = (int)(img->height * scale);
 
-    struct imageNB scaledImg;
-    scaledImg.width = newWidth;
-    scaledImg.height = newHeight;
-    scaledImg.vmax = img->vmax;
+    struct imageNB tmp;
+    tmp.width = newWidth;
+    tmp.height = newHeight;
+    tmp.vmax = img->vmax;
 
-    scaledImg.color = malloc(newHeight * sizeof(unsigned char*));
+    tmp.color = malloc(newHeight * sizeof(unsigned char*));
     for (int ii = 0; ii < newHeight; ii++) {
-        scaledImg.color[ii] = malloc(newWidth * sizeof(unsigned char));
+        tmp.color[ii] = malloc(newWidth * sizeof(unsigned char));
     }
 
     for (int i = 0; i < newWidth; i++) {
@@ -893,11 +832,11 @@ void scalePGM(struct imageNB* img, float scale)
             originalX = (originalX >= img->width) ? img->width - 1 : originalX;
             originalY = (originalY >= img->height) ? img->height - 1 : originalY;
 
-            scaledImg.color[j][i] = img->color[originalY][originalX];
+            tmp.color[j][i] = img->color[originalY][originalX];
         }
     }
 
-    savePGM(&scaledImg, "./images/result/scaled_image.pgm");
+    savePGM(&tmp, "./images/result/scaled_image.pgm");
 }
 
 void scalePPM(struct imageRGB* img, float scale)
@@ -905,18 +844,18 @@ void scalePPM(struct imageRGB* img, float scale)
     int newWidth = (int)(img->width * scale);
     int newHeight = (int)(img->height * scale);
 
-    struct imageRGB scaledImg;
-    scaledImg.width = newWidth;
-    scaledImg.height = newHeight;
+    struct imageRGB tmp;
+    tmp.width = newWidth;
+    tmp.height = newHeight;
 
-    scaledImg.red = malloc(newHeight * sizeof(unsigned char*));
-    scaledImg.green = malloc(newHeight * sizeof(unsigned char*));
-    scaledImg.blue = malloc(newHeight * sizeof(unsigned char*));
+    tmp.red = malloc(newHeight * sizeof(unsigned char*));
+    tmp.green = malloc(newHeight * sizeof(unsigned char*));
+    tmp.blue = malloc(newHeight * sizeof(unsigned char*));
 
     for (int i = 0; i < newHeight; i++) {
-        scaledImg.red[i] = malloc(newWidth * sizeof(unsigned char));
-        scaledImg.green[i] = malloc(newWidth * sizeof(unsigned char));
-        scaledImg.blue[i] = malloc(newWidth * sizeof(unsigned char));
+        tmp.red[i] = malloc(newWidth * sizeof(unsigned char));
+        tmp.green[i] = malloc(newWidth * sizeof(unsigned char));
+        tmp.blue[i] = malloc(newWidth * sizeof(unsigned char));
     }
 
     for (int i = 0; i < newWidth; i++) {
@@ -929,18 +868,18 @@ void scalePPM(struct imageRGB* img, float scale)
             originalX = (originalX >= img->width) ? img->width - 1 : originalX;
             originalY = (originalY >= img->height) ? img->height - 1 : originalY;
 
-            scaledImg.red[j][i] = img->red[originalY][originalX];
-            scaledImg.green[j][i] = img->green[originalY][originalX];
-            scaledImg.blue[j][i] = img->blue[originalY][originalX];
+            tmp.red[j][i] = img->red[originalY][originalX];
+            tmp.green[j][i] = img->green[originalY][originalX];
+            tmp.blue[j][i] = img->blue[originalY][originalX];
         }
     }
 
-    savePPM(&scaledImg, "./images/result/scaled_image.ppm");
+    savePPM(&tmp, "./images/result/scaled_image.ppm");
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 
-void luminositePGM(struct imageNB* img, int brightness)
+void luminosityPGM(struct imageNB* img, int brightness)
 {
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
@@ -955,7 +894,7 @@ void luminositePGM(struct imageNB* img, int brightness)
     savePGM(img, "./images/result/adjusted_brightness.pgm");
 }
 
-void luminositePPM(struct imageRGB* img, int brightness)
+void luminosityPPM(struct imageRGB* img, int brightness)
 {
     for (int i = 0; i < img->width; i++) {
         for (int j = 0; j < img->height; j++) {
@@ -987,14 +926,14 @@ void rotatePGM(struct imageNB* img, double angle) {
     int newHeight = (int)(fabs(img->width * sin(angleRad)) + fabs(img->height * cos(angleRad)));
 
     // Création d'une nouvelle image avec les nouvelles dimensions
-    struct imageNB rotatedImg;
-    rotatedImg.width = newWidth;
-    rotatedImg.height = newHeight;
-    rotatedImg.vmax = img->vmax;
+    struct imageNB tmp;
+    tmp.width = newWidth;
+    tmp.height = newHeight;
+    tmp.vmax = img->vmax;
 
-    rotatedImg.color = malloc(rotatedImg.height * sizeof(unsigned char*));
-    for (int i = 0; i < rotatedImg.height; i++) {
-        rotatedImg.color[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+    tmp.color = malloc(tmp.height * sizeof(unsigned char*));
+    for (int i = 0; i < tmp.height; i++) {
+        tmp.color[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     // Calcul des coordonnées du centre de l'image d'origine
@@ -1002,12 +941,12 @@ void rotatePGM(struct imageNB* img, double angle) {
     int centerY = img->height / 2;
 
     // Calcul des coordonnées du centre de la nouvelle image
-    int newCenterX = rotatedImg.width / 2;
-    int newCenterY = rotatedImg.height / 2;
+    int newCenterX = tmp.width / 2;
+    int newCenterY = tmp.height / 2;
 
     // Effectuer la rotation
-    for (int i = 0; i < rotatedImg.width; i++) {
-        for (int j = 0; j < rotatedImg.height; j++) {
+    for (int i = 0; i < tmp.width; i++) {
+        for (int j = 0; j < tmp.height; j++) {
             // Translations pour recentrer l'image pendant la rotation
             int x = i - newCenterX;
             int y = j - newCenterY;
@@ -1018,20 +957,20 @@ void rotatePGM(struct imageNB* img, double angle) {
 
             // Vérification des limites pour éviter le dépassement
             if (originalX >= 0 && originalX < img->width && originalY >= 0 && originalY < img->height) {
-                rotatedImg.color[j][i] = img->color[originalY][originalX];
+                tmp.color[j][i] = img->color[originalY][originalX];
             } else {
-                rotatedImg.color[j][i] = 0;  // Remplir les pixels hors limite avec une intensité de 0
+                tmp.color[j][i] = 0;  // Remplir les pixels hors limite avec une intensité de 0
             }
         }
     }
 
     // Mettre à jour les dimensions de l'image d'origine
-    img->width = rotatedImg.width;
-    img->height = rotatedImg.height;
-    img->vmax = rotatedImg.vmax;
+    img->width = tmp.width;
+    img->height = tmp.height;
+    img->vmax = tmp.vmax;
 
     // Copier les données de l'image tournée dans l'image d'origine
-    img->color = rotatedImg.color;
+    img->color = tmp.color;
 }
 
 void rotatePPM(struct imageRGB* img, double angle) {
@@ -1043,18 +982,18 @@ void rotatePPM(struct imageRGB* img, double angle) {
     int newHeight = (int)(fabs(img->width * sin(angleRad)) + fabs(img->height * cos(angleRad)));
 
     // Création d'une nouvelle image avec les nouvelles dimensions
-    struct imageRGB rotatedImg;
-    rotatedImg.width = newWidth;
-    rotatedImg.height = newHeight;
+    struct imageRGB tmp;
+    tmp.width = newWidth;
+    tmp.height = newHeight;
 
-    rotatedImg.red = malloc(rotatedImg.height * sizeof(unsigned char*));
-    rotatedImg.green = malloc(rotatedImg.height * sizeof(unsigned char*));
-    rotatedImg.blue = malloc(rotatedImg.height * sizeof(unsigned char*));
+    tmp.red = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.green = malloc(tmp.height * sizeof(unsigned char*));
+    tmp.blue = malloc(tmp.height * sizeof(unsigned char*));
 
-    for (int i = 0; i < rotatedImg.height; i++) {
-        rotatedImg.red[i] = malloc(rotatedImg.width * sizeof(unsigned char));
-        rotatedImg.green[i] = malloc(rotatedImg.width * sizeof(unsigned char));
-        rotatedImg.blue[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+    for (int i = 0; i < tmp.height; i++) {
+        tmp.red[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.green[i] = malloc(tmp.width * sizeof(unsigned char));
+        tmp.blue[i] = malloc(tmp.width * sizeof(unsigned char));
     }
 
     // Calcul des coordonnées du centre de l'image d'origine
@@ -1062,12 +1001,12 @@ void rotatePPM(struct imageRGB* img, double angle) {
     int centerY = img->height / 2;
 
     // Calcul des coordonnées du centre de la nouvelle image
-    int newCenterX = rotatedImg.width / 2;
-    int newCenterY = rotatedImg.height / 2;
+    int newCenterX = tmp.width / 2;
+    int newCenterY = tmp.height / 2;
 
     // Effectuer la rotation
-    for (int i = 0; i < rotatedImg.width; i++) {
-        for (int j = 0; j < rotatedImg.height; j++) {
+    for (int i = 0; i < tmp.width; i++) {
+        for (int j = 0; j < tmp.height; j++) {
             // Translations pour recentrer l'image pendant la rotation
             int x = i - newCenterX;
             int y = j - newCenterY;
@@ -1078,25 +1017,25 @@ void rotatePPM(struct imageRGB* img, double angle) {
 
             // Vérification des limites pour éviter le dépassement
             if (originalX >= 0 && originalX < img->width && originalY >= 0 && originalY < img->height) {
-                rotatedImg.red[j][i] = img->red[originalY][originalX];
-                rotatedImg.green[j][i] = img->green[originalY][originalX];
-                rotatedImg.blue[j][i] = img->blue[originalY][originalX];
+                tmp.red[j][i] = img->red[originalY][originalX];
+                tmp.green[j][i] = img->green[originalY][originalX];
+                tmp.blue[j][i] = img->blue[originalY][originalX];
             } else {
-                rotatedImg.red[j][i] = 0;  // Remplir les pixels hors limite avec une intensité de 0
-                rotatedImg.green[j][i] = 0;
-                rotatedImg.blue[j][i] = 0;
+                tmp.red[j][i] = 0;  // Remplir les pixels hors limite avec une intensité de 0
+                tmp.green[j][i] = 0;
+                tmp.blue[j][i] = 0;
             }
         }
     }
 
     // Mettre à jour les dimensions de l'image d'origine
-    img->width = rotatedImg.width;
-    img->height = rotatedImg.height;
+    img->width = tmp.width;
+    img->height = tmp.height;
 
     // Copier les données de l'image tournée dans l'image d'origine
-    img->red = rotatedImg.red;
-    img->green = rotatedImg.green;
-    img->blue = rotatedImg.blue;
+    img->red = tmp.red;
+    img->green = tmp.green;
+    img->blue = tmp.blue;
 }
 
 

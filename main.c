@@ -5,31 +5,25 @@
 #include "image.h"
 #include "effects.h"
 
-    // char start[256];
-    // printf("Saisissez le chemin vers l'image: ");
-
-    // if(fgets(start,sizeof(start), stdin) != NULL){
-    //     start[strcspn(start,"\n")] = '\0';
-
 int main(){
-    char* start = NULL;
+    char* str = NULL;
     size_t buffer_size = 0;
 
     printf("Saisissez le chemin vers l'image: ");
-    ssize_t imgPath = getline(&start, &buffer_size, stdin);
+    ssize_t imgPath = getline(&str, &buffer_size, stdin);
 
     if (imgPath != -1) {
-        if (start[imgPath - 1] == '\n') {
-            start[imgPath - 1] = '\0';
+        if (str[imgPath - 1] == '\n') {
+            str[imgPath - 1] = '\0';
         }
 
         // Trouver l'extension du fichier
-        char* file_extension = strrchr(start, '.');
+        char* file_extension = strrchr(str, '.');
         if (file_extension != NULL) {
             // Comparer l'extension pour déterminer le type d'image
             if (strcmp(file_extension, ".pgm") == 0) {
                 struct imageNB* img;
-                loadPGM(&img, start);
+                loadPGM(&img, str);
 
                 int choice;
                 printf("Choisissez l'effet:\n");
@@ -107,7 +101,7 @@ int main(){
                             int rayon;
                             printf("Saisissez le rayon de floutage: ");
                             scanf("%d", &rayon);
-                            floutagePGM(&img, rayon);
+                            blurPGM(&img, rayon);
                             break;
                         }
                     case 9:
@@ -116,7 +110,7 @@ int main(){
                             int pixelSize;
                             printf("Saisissez la taille des pixels: ");
                             scanf("%d", &pixelSize);
-                            pixeliserPGM(&img, pixelSize);
+                            pixelatePGM(&img, pixelSize);
                             break;
                         }
                     case 10:
@@ -143,7 +137,7 @@ int main(){
                             int valeurLuminosite;
                             printf("Saisissez la valeur de luminosite: ");
                             scanf("%d", &valeurLuminosite);
-                            luminositePGM(&img, valeurLuminosite);
+                            luminosityPGM(&img, valeurLuminosite);
                             break;
                         }
                     case 13:
@@ -166,7 +160,7 @@ int main(){
 
             } else if (strcmp(file_extension, ".ppm") == 0) {
                 struct imageRGB* img;
-                loadPPM(&img, start);
+                loadPPM(&img, str);
                 
                 int choice;
                 printf("Choisissez l'effet:\n");
@@ -247,7 +241,7 @@ int main(){
                             int rayon;
                             printf("Saisissez le rayon de floutage: ");
                             scanf("%d", &rayon);
-                            floutagePPM(&img, rayon);
+                            blurPPM(&img, rayon);
                             break;
                         }
                     case 9:
@@ -256,7 +250,7 @@ int main(){
                             int pixelSize;
                             printf("Saisissez la taille des pixels: ");
                             scanf("%d", &pixelSize);
-                            pixeliserPPM(&img, pixelSize);
+                            pixelatePPM(&img, pixelSize);
                             break;
                         }
                     case 10:
@@ -283,7 +277,7 @@ int main(){
                             int valeurLuminosite;
                             printf("Saisissez la valeur de luminosite: ");
                             scanf("%d", &valeurLuminosite);
-                            luminositePPM(&img, valeurLuminosite);
+                            luminosityPPM(&img, valeurLuminosite);
                             break;
                         }
                     case 13:
