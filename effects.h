@@ -897,12 +897,6 @@ void rotatePGM(struct imageNB* img, double angle) {
         }
     }
 
-    // Libérer la mémoire de l'image d'origine
-    for (int i = 0; i < img->height; i++) {
-        free(img->color[i]);
-    }
-    free(img->color);
-
     // Mettre à jour les dimensions de l'image d'origine
     img->width = rotatedImg.width;
     img->height = rotatedImg.height;
@@ -912,6 +906,70 @@ void rotatePGM(struct imageNB* img, double angle) {
     img->color = rotatedImg.color;
 }
 
+void rotatePPM(struct imageRGB* img, double angle) {
+    // Conversion degrés vers radians
+    double angleRad = angle * M_PI / 180.0;
+
+    // Calcul des nouvelles dimensions de l'image
+    int newWidth = (int)(fabs(img->width * cos(angleRad)) + fabs(img->height * sin(angleRad)));
+    int newHeight = (int)(fabs(img->width * sin(angleRad)) + fabs(img->height * cos(angleRad)));
+
+    // Création d'une nouvelle image avec les nouvelles dimensions
+    struct imageRGB rotatedImg;
+    rotatedImg.width = newWidth;
+    rotatedImg.height = newHeight;
+
+    rotatedImg.red = malloc(rotatedImg.height * sizeof(unsigned char*));
+    rotatedImg.green = malloc(rotatedImg.height * sizeof(unsigned char*));
+    rotatedImg.blue = malloc(rotatedImg.height * sizeof(unsigned char*));
+
+    for (int i = 0; i < rotatedImg.height; i++) {
+        rotatedImg.red[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+        rotatedImg.green[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+        rotatedImg.blue[i] = malloc(rotatedImg.width * sizeof(unsigned char));
+    }
+
+    // Calcul des coordonnées du centre de l'image d'origine
+    int centerX = img->width / 2;
+    int centerY = img->height / 2;
+
+    // Calcul des coordonnées du centre de la nouvelle image
+    int newCenterX = rotatedImg.width / 2;
+    int newCenterY = rotatedImg.height / 2;
+
+    // Effectuer la rotation
+    for (int i = 0; i < rotatedImg.width; i++) {
+        for (int j = 0; j < rotatedImg.height; j++) {
+            // Translations pour recentrer l'image pendant la rotation
+            int x = i - newCenterX;
+            int y = j - newCenterY;
+
+            // Calcul des coordonnées d'origine après rotation
+            int originalX = (int)(x * cos(angleRad) - y * sin(angleRad) + centerX);
+            int originalY = (int)(x * sin(angleRad) + y * cos(angleRad) + centerY);
+
+            // Vérification des limites pour éviter le dépassement
+            if (originalX >= 0 && originalX < img->width && originalY >= 0 && originalY < img->height) {
+                rotatedImg.red[j][i] = img->red[originalY][originalX];
+                rotatedImg.green[j][i] = img->green[originalY][originalX];
+                rotatedImg.blue[j][i] = img->blue[originalY][originalX];
+            } else {
+                rotatedImg.red[j][i] = 0;  // Remplir les pixels hors limite avec une intensité de 0
+                rotatedImg.green[j][i] = 0;
+                rotatedImg.blue[j][i] = 0;
+            }
+        }
+    }
+
+    // Mettre à jour les dimensions de l'image d'origine
+    img->width = rotatedImg.width;
+    img->height = rotatedImg.height;
+
+    // Copier les données de l'image tournée dans l'image d'origine
+    img->red = rotatedImg.red;
+    img->green = rotatedImg.green;
+    img->blue = rotatedImg.blue;
+}
 
 
 #endif
