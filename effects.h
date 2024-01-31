@@ -470,6 +470,134 @@ void generateHistogramGray(struct imageNB* image) {
     fclose(file);
 }
 
+void generateHistogramRed(struct imageRGB* image) {
+    FILE* file = fopen("./images/result/histo_red.pgm", "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme du canal rouge.\n");
+        return;
+    }
+
+    fprintf(file, "P2\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensité
+
+    // Calculer l'histogramme du canal rouge
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width; ++i) {
+        for (int j = 0; j < image->height; ++j) {
+            pixels[image->red[j][i]]++;
+        }
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et écrire l'histogramme dans le fichier PGM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 ");  // attribuer 0 pour les pixels représentant l'histogramme
+            } else {
+                fprintf(file, "255 ");  // attribuer 255 pour les pixels qui ne représentent pas l'histogramme
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+}
+
+void generateHistogramGreen(struct imageRGB* image) {
+    FILE* file = fopen("./images/result/histo_green.pgm", "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme du canal vert.\n");
+        return;
+    }
+
+    fprintf(file, "P2\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensité
+
+    // Calculer l'histogramme du canal vert
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width; ++i) {
+        for (int j = 0; j < image->height; ++j) {
+            pixels[image->green[j][i]]++;
+        }
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et écrire l'histogramme dans le fichier PGM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 ");  // attribuer 0 pour les pixels représentant l'histogramme
+            } else {
+                fprintf(file, "255 ");  // attribuer 255 pour les pixels qui ne représentent pas l'histogramme
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+}
+
+void generateHistogramBlue(struct imageRGB* image) {
+    FILE* file = fopen("./images/result/histo_blue.pgm", "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme du canal bleu.\n");
+        return;
+    }
+
+    fprintf(file, "P2\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensité
+
+    // Calculer l'histogramme du canal bleu
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width; ++i) {
+        for (int j = 0; j < image->height; ++j) {
+            pixels[image->blue[j][i]]++;
+        }
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et écrire l'histogramme dans le fichier PGM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 ");  // attribuer 0 pour les pixels représentant l'histogramme
+            } else {
+                fprintf(file, "255 ");  // attribuer 255 pour les pixels qui ne représentent pas l'histogramme
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------

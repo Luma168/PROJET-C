@@ -236,7 +236,9 @@ int main(){
                     case 7:
                         // Histogramme
                         {
-                            // generateHistogramRGB(&img);
+                            generateHistogramRed(&img);
+                            generateHistogramGreen(&img);
+                            generateHistogramBlue(&img);
                             break;
                         }
                     case 8:
