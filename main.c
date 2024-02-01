@@ -147,7 +147,6 @@ int main(){
                             printf("Entrez l'angle de rotation en degres : ");
                             scanf("%lf", &angle);
 
-                            // Assurez-vous que l'angle est dans la plage souhaitée, par exemple -360 à 360 degrés
                             angle = fmod(angle, 360.0);
 
                             rotatePGM(&img, angle);
@@ -177,6 +176,7 @@ int main(){
                 printf("11. Redimensionner (scale)\n");
                 printf("12. Ajuster la luminosite\n");
                 printf("13. Rotate\n");
+                printf("14. Passer en niveau de gris\n");
 
 
                 scanf("%d", &choice);
@@ -287,11 +287,17 @@ int main(){
                         printf("Entrez l'angle de rotation en degres : ");
                         scanf("%lf", &angle);
 
-                        // Assurez-vous que l'angle est dans la plage souhaitée, par exemple -360 à 360 degrés
                         angle = fmod(angle, 360.0);
 
                         rotatePPM(&img, angle);
                         savePPM(&img, "./images/result/rotate.ppm");
+                        break;
+                    }
+
+                    case 14:
+                    // PPM to PGM
+                    {
+                        ppmToPgm(&img);
                         break;
                     }
                     default:
